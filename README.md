@@ -96,7 +96,7 @@ cd reservations-system
 docker-compose up --build
 ```
 
-- **Frontend:**    [http://localhost:4200](http://localhost:4200)  
+- **Frontend:**    [http://localhost](http://localhost)  
 - **Backend API:** [http://localhost:3000](http://localhost:3000)  
 - **phpMyAdmin:**  [http://localhost:8080](http://localhost:8080)  
   - User: `root`  
