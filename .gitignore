@@ -1,0 +1,65 @@
+# ========== Node.js Dependencies ==========
+**/node_modules/
+
+# ========== Build / Output ==========
+**/dist/
+**/build/
+**/tmp/
+**/.angular/cache/
+**/.nyc_output/
+**/out-tsc/
+**/bazel-out/
+
+# ========== Logs ==========
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ========== Coverage & Reports ==========
+**/coverage/
+report.[0-9]*.json
+
+# ========== Environment Files ==========
+**/.env
+**/.env.*.local
+**/.env.local
+
+# ========== Runtime & Temp ==========
+pids/
+*.pid
+*.seed
+*.pid.lock
+.temp/
+.tmp/
+connect.lock
+libpeerconnection.log
+testem.log
+
+# ========== Typings & Misc ==========
+typings/
+.sass-cache/
+.history/
+
+# ========== OS / System Files ==========
+.DS_Store
+Thumbs.db
+
+# ========== IDEs and Editors ==========
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# ========== VS Code ==========
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
