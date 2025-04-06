@@ -1,17 +1,19 @@
+# Use Node base image
 FROM node:18
 
-# Establece el directorio de trabajo
+# Set working directory
 WORKDIR /app
 
-# Copia package.json e instala dependencias
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copia el código fuente
+# Copy source code
 COPY . .
 
-# Expone el puerto
+# Build and expose port
+RUN npm run build
 EXPOSE 3000
 
-# Ejecuta la aplicación
-CMD ["npm", "run", "start"]
+# Start app
+CMD ["npm", "run", "start:prod"]
