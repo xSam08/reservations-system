@@ -80,6 +80,7 @@ All system development is accompanied by detailed software engineering documenta
 - **Unit Tests**
   - Coverage ≥ 85% for all critical components  
 
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
@@ -124,5 +125,4 @@ npm run test
 For any inquiries or technical support, please contact the development team at:
 
 **Dev Team**  
-📧 samuel.osunam@autonoma.edu.co
-📧 daniel.giraldov@autonoma.edu.co
+📧 daniel.giraldov@autonoma.edu.co and samuel.osunam@autonoma.edu.co
