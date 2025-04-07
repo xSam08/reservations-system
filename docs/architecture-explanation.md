@@ -1,230 +1,230 @@
-# 🏗️ Arquitectura y Diseño del Sistema BreazeInTheMoon
+# Architecture and System Design for BreazeInTheMoon
 
-Este documento explica la arquitectura, patrones de diseño y diagramas utilizados en el sistema de reservas de hoteles BreazeInTheMoon.
+This document explains the architecture, design patterns, and diagrams used in the BreazeInTheMoon hotel reservation system.
 
-## 📋 Contenido
+## Table of Contents
 
-- [Patrones de Diseño](#patrones-de-diseño)
-- [Diagrama de Clases](#diagrama-de-clases)
-- [Diagrama Entidad-Relación](#diagrama-entidad-relación)
+- [Design Patterns](#design-patterns)
+- [Class Diagram](#class-diagram)
+- [Entity-Relationship Diagram](#entity-relationship-diagram)
 
-## 🔩 Patrones de Diseño
+## Design Patterns
 
-En el desarrollo del sistema BreazeInTheMoon, hemos adoptado varios patrones de diseño clave para garantizar una arquitectura robusta, mantenible y escalable:
+In the development of the BreazeInTheMoon system, we have adopted several key design patterns to ensure a robust, maintainable, and scalable architecture:
 
-### 1. Arquitectura de Microservicios
+### 1. Microservices Architecture
 
-**Justificación**: Elegimos una arquitectura de microservicios para permitir el desarrollo independiente de componentes, facilitar la escalabilidad horizontal y mejorar la resiliencia del sistema. Esto nos permite desplegar y actualizar servicios individuales sin afectar todo el sistema.
+**Justification**: We chose a microservices architecture to enable independent component development, facilitate horizontal scalability, and improve system resilience. This allows us to deploy and update individual services without affecting the entire system.
 
-**Beneficios**:
-- Desarrollo paralelo por equipos independientes
-- Escalabilidad selectiva de servicios específicos
-- Mayor tolerancia a fallos
-- Facilita la integración continua y despliegue continuo (CI/CD)
+**Benefits**:
+- Parallel development by independent teams
+- Selective scalability of specific services
+- Enhanced fault tolerance
+- Facilitates continuous integration and continuous deployment (CI/CD)
 
-### 2. Patrón MVC (Modelo-Vista-Controlador)
+### 2. MVC Pattern (Model-View-Controller)
 
-**Justificación**: Implementamos MVC para separar claramente las responsabilidades entre la lógica de negocio, la presentación y el control del flujo de la aplicación.
+**Justification**: We implemented MVC to clearly separate responsibilities between business logic, presentation, and application flow control.
 
-**Beneficios**:
-- Separación de preocupaciones
-- Facilita las pruebas unitarias
-- Promueve la reutilización de código
-- Mejora la mantenibilidad
+**Benefits**:
+- Separation of concerns
+- Facilitates unit testing
+- Promotes code reuse
+- Improves maintainability
 
-### 3. Patrón Repositorio
+### 3. Repository Pattern
 
-**Justificación**: Utilizamos este patrón para abstraer la lógica de acceso a datos y proporcionar una API consistente para la persistencia de objetos.
+**Justification**: We utilize this pattern to abstract data access logic and provide a consistent API for object persistence.
 
-**Beneficios**:
-- Desacopla la lógica de negocio del acceso a datos
-- Facilita el cambio de implementación de almacenamiento
-- Mejora la testabilidad al permitir mock repositories en pruebas
+**Benefits**:
+- Decouples business logic from data access
+- Facilitates storage implementation changes
+- Improves testability by allowing mock repositories in tests
 
-### 4. Patrón DTO (Data Transfer Object)
+### 4. DTO Pattern (Data Transfer Object)
 
-**Justificación**: Empleamos DTOs para transferir datos entre subsistemas, especialmente en la comunicación entre el frontend y el backend.
+**Justification**: We employ DTOs to transfer data between subsystems, especially in frontend-backend communication.
 
-**Beneficios**:
-- Optimización de transferencia de datos en la red
-- Desacoplamiento entre capas
-- Control sobre qué datos se exponen a través de APIs
+**Benefits**:
+- Network data transfer optimization
+- Layer decoupling
+- Control over data exposed through APIs
 
-### 5. Patrón Observer (para notificaciones)
+### 5. Observer Pattern (for notifications)
 
-**Justificación**: Implementamos el patrón Observer para el sistema de notificaciones en tiempo real.
+**Justification**: We implemented the Observer pattern for the real-time notification system.
 
-**Beneficios**:
-- Comunicación desacoplada entre componentes
-- Actualización en tiempo real de la interfaz de usuario
-- Extensibilidad para diferentes tipos de notificaciones
+**Benefits**:
+- Decoupled communication between components
+- Real-time user interface updates
+- Extensibility for different notification types
 
-## 📊 Diagrama de Clases
+## Class Diagram
 
-![Diagrama de Clases](diagrams/ClassDiagram.svg)
+![Class Diagram](diagrams/ClassDiagram.svg)
 
-El diagrama de clases de BreazeInTheMoon está estructurado en tres capas principales:
+The BreazeInTheMoon class diagram is structured in three main layers:
 
-### 1. Modelo del Dominio (Entidades)
+### 1. Domain Model (Entities)
 
-Esta capa representa las entidades fundamentales del sistema y sus relaciones:
+This layer represents the fundamental system entities and their relationships:
 
-- **BaseEntity**: Clase base que proporciona atributos comunes como id, createdAt y updatedAt.
-- **Entidades principales**: User, Hotel, Room, Reservation, Payment, Review, Notification, Report.
-- **Enumeraciones**: UserRole, RoomType, ReservationStatus, NotificationType, ReportType.
+- **BaseEntity**: Base class providing common attributes such as id, createdAt, and updatedAt.
+- **Primary Entities**: User, Hotel, Room, Reservation, Payment, Review, Notification, Report.
+- **Enumerations**: UserRole, RoomType, ReservationStatus, NotificationType, ReportType.
 - **Value Objects**: Address, Money.
 
-Las entidades del dominio son independientes de la implementación técnica y representan el modelo conceptual del sistema.
+Domain entities are independent of technical implementation and represent the system's conceptual model.
 
-### 2. Capa de Servicios y Controladores (Backend)
+### 2. Services and Controllers Layer (Backend)
 
-Implementa la lógica de negocio y expone APIs:
+Implements business logic and exposes APIs:
 
-- **Servicios**: Encapsulan la lógica de negocio (AuthService, UserService, HotelService, etc.).
-- **Controladores**: Gestionan las peticiones HTTP y delegan en los servicios (AuthController, UserController, etc.).
+- **Services**: Encapsulate business logic (AuthService, UserService, HotelService, etc.).
+- **Controllers**: Handle HTTP requests and delegate to services (AuthController, UserController, etc.).
 
-### 3. Componentes de Interfaz de Usuario (Frontend)
+### 3. User Interface Components (Frontend)
 
-Implementa la interfaz de usuario en Angular:
+Implements the user interface in Angular:
 
-- **Componentes principales**: HotelListComponent, HotelDetailComponent, ReservationFormComponent, etc.
+- **Main Components**: HotelListComponent, HotelDetailComponent, ReservationFormComponent, etc.
 - **Dashboards**: CustomerDashboardComponent, HotelAdminDashboardComponent.
 
-### ¿Por qué está separado en estas capas?
+### Layer Separation Rationale
 
-Esta separación refleja la arquitectura de microservicios y MVC solicitada, donde:
+This separation reflects the requested microservices and MVC architecture, where:
 
-1. **El modelo de dominio** define las entidades compartidas entre frontend y backend.
-2. **El backend** implementa la lógica de negocio y APIs en NestJS.
-3. **El frontend** implementa la interfaz de usuario en Angular.
+1. **Domain model** defines entities shared between frontend and backend.
+2. **Backend** implements business logic and APIs in NestJS.
+3. **Frontend** implements the user interface in Angular.
 
-Esta división facilita:
-- El desarrollo independiente de cada capa
-- La reutilización de código
-- La escalabilidad horizontal de servicios específicos
-- La testabilidad de componentes aislados
+This division facilitates:
+- Independent development of each layer
+- Code reuse
+- Horizontal scalability of specific services
+- Isolated component testing
 
-## 📝 Diagrama Entidad-Relación
+## Entity-Relationship Diagram
 
-![Diagrama Entidad-Relación](diagrams/Entity-RelationshipDiagram.drawio)
+![Entity-Relationship Diagram](diagrams/Entity-RelationshipDiagram.drawio)
 
-El diagrama entidad-relación muestra la estructura de la base de datos del sistema BreazeInTheMoon, siguiendo las mejores prácticas de nomenclatura para facilitar el mantenimiento y la comprensión.
+The entity-relationship diagram shows the database structure of the BreazeInTheMoon system, following best practices for nomenclature to facilitate maintenance and understanding.
 
-### Convención de Nomenclatura
+### Naming Convention
 
-Para mejorar la claridad y reducir ambigüedades, utilizamos la siguiente convención para nombres de campos:
+To improve clarity and reduce ambiguities, we use the following convention for field names:
 
-- **Claves primarias**: `tabla_id` (ej: `user_id`, `hotel_id`, `room_id`)
-- **Claves foráneas**: `tabla_campo` (ej: `hotel_id` en la tabla `rooms`)
-- **Campos de tiempo**: `created_at`, `updated_at`
-- **Campos booleanos**: prefijo `is_` o `has_` (ej: `is_available`, `has_balcony`)
+- **Primary keys**: `table_id` (e.g., `user_id`, `hotel_id`, `room_id`)
+- **Foreign keys**: `table_field` (e.g., `hotel_id` in the `rooms` table)
+- **Timestamp fields**: `created_at`, `updated_at`
+- **Boolean fields**: prefix `is_` or `has_` (e.g., `is_available`, `has_balcony`)
 
-### Entidades Principales
+### Primary Entities
 
 - **Users**
-  * `user_id`: Identificador único del usuario
-  * `email`: Correo electrónico (único)
-  * `password`: Contraseña encriptada
-  * `name`: Nombre completo
-  * `phone_number`: Número telefónico
-  * `role`: Rol del usuario (CUSTOMER, HOTEL_ADMIN, SYSTEM_ADMIN)
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `user_id`: Unique user identifier
+  * `email`: Email address (unique)
+  * `password`: Encrypted password
+  * `name`: Full name
+  * `phone_number`: Phone number
+  * `role`: User role (CUSTOMER, HOTEL_ADMIN, SYSTEM_ADMIN)
+  * `created_at`, `updated_at`: Timestamps
 
 - **Hotels**
-  * `hotel_id`: Identificador único del hotel
-  * `owner_id`: ID del administrador del hotel (FK → users.user_id)
-  * `name`: Nombre del hotel
-  * `description`: Descripción detallada
-  * Campos de dirección: `street`, `city`, `state`, `country`, `zip_code`
-  * `average_rating`: Calificación promedio
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `hotel_id`: Unique hotel identifier
+  * `owner_id`: Hotel administrator ID (FK → users.user_id)
+  * `name`: Hotel name
+  * `description`: Detailed description
+  * Address fields: `street`, `city`, `state`, `country`, `zip_code`
+  * `average_rating`: Average rating
+  * `created_at`, `updated_at`: Timestamps
 
 - **Rooms**
-  * `room_id`: Identificador único de la habitación
-  * `hotel_id`: ID del hotel al que pertenece (FK → hotels.hotel_id)
-  * `room_number`: Número de habitación
-  * `room_type`: Tipo de habitación (SINGLE, DOUBLE, SUITE, etc.)
-  * `capacity`: Capacidad máxima
-  * `price_amount`: Precio de la habitación
-  * `price_currency`: Moneda del precio
-  * `is_available`: Indicador de disponibilidad
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `room_id`: Unique room identifier
+  * `hotel_id`: ID of the hotel to which it belongs (FK → hotels.hotel_id)
+  * `room_number`: Room number
+  * `room_type`: Room type (SINGLE, DOUBLE, SUITE, etc.)
+  * `capacity`: Maximum capacity
+  * `price_amount`: Room price
+  * `price_currency`: Price currency
+  * `is_available`: Availability indicator
+  * `created_at`, `updated_at`: Timestamps
 
 - **Reservations**
-  * `reservation_id`: Identificador único de la reserva
-  * `customer_id`: ID del cliente (FK → users.user_id)
-  * `hotel_id`: ID del hotel (FK → hotels.hotel_id)
-  * `room_id`: ID de la habitación (FK → rooms.room_id)
-  * `check_in_date`: Fecha de entrada
-  * `check_out_date`: Fecha de salida
-  * `reservation_status`: Estado (PENDING, CONFIRMED, REJECTED, etc.)
-  * `total_price_amount`: Precio total
-  * `total_price_currency`: Moneda del precio
-  * `guest_count`: Número de huéspedes
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `reservation_id`: Unique reservation identifier
+  * `customer_id`: Customer ID (FK → users.user_id)
+  * `hotel_id`: Hotel ID (FK → hotels.hotel_id)
+  * `room_id`: Room ID (FK → rooms.room_id)
+  * `check_in_date`: Check-in date
+  * `check_out_date`: Check-out date
+  * `reservation_status`: Status (PENDING, CONFIRMED, REJECTED, etc.)
+  * `total_price_amount`: Total price
+  * `total_price_currency`: Price currency
+  * `guest_count`: Number of guests
+  * `created_at`, `updated_at`: Timestamps
 
 - **Payments**
-  * `payment_id`: Identificador único del pago
-  * `reservation_id`: ID de la reserva (FK → reservations.reservation_id)
-  * `amount`: Monto del pago
-  * `currency`: Moneda del pago
-  * `payment_status`: Estado del pago
-  * `payment_method`: Método de pago
-  * `transaction_id`: ID de la transacción externa
-  * `payment_date`: Fecha del pago
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `payment_id`: Unique payment identifier
+  * `reservation_id`: Reservation ID (FK → reservations.reservation_id)
+  * `amount`: Payment amount
+  * `currency`: Payment currency
+  * `payment_status`: Payment status
+  * `payment_method`: Payment method
+  * `transaction_id`: External transaction ID
+  * `payment_date`: Payment date
+  * `created_at`, `updated_at`: Timestamps
 
 - **Reviews**
-  * `review_id`: Identificador único de la reseña
-  * `customer_id`: ID del cliente (FK → users.user_id)
-  * `hotel_id`: ID del hotel (FK → hotels.hotel_id)
-  * `reservation_id`: ID de la reserva (FK → reservations.reservation_id)
-  * `rating`: Calificación (1-5)
-  * `content`: Contenido de la reseña
-  * `created_at`, `updated_at`: Marcas de tiempo
+  * `review_id`: Unique review identifier
+  * `customer_id`: Customer ID (FK → users.user_id)
+  * `hotel_id`: Hotel ID (FK → hotels.hotel_id)
+  * `reservation_id`: Reservation ID (FK → reservations.reservation_id)
+  * `rating`: Rating (1-5)
+  * `content`: Review content
+  * `created_at`, `updated_at`: Timestamps
 
 - **Notifications**
-  * `notification_id`: Identificador único de la notificación
-  * `user_id`: ID del usuario destinatario (FK → users.user_id)
-  * `notification_type`: Tipo de notificación
-  * `message`: Contenido de la notificación
-  * `is_read`: Indicador de lectura
-  * `created_at`: Marca de tiempo de creación
+  * `notification_id`: Unique notification identifier
+  * `user_id`: Recipient user ID (FK → users.user_id)
+  * `notification_type`: Notification type
+  * `message`: Notification content
+  * `is_read`: Read indicator
+  * `created_at`: Creation timestamp
 
-### Relaciones Clave
+### Key Relationships
 
-- Un usuario (`users.user_id`) con rol HOTEL_ADMIN puede administrar muchos hoteles (`hotels.owner_id`)
-- Un hotel (`hotels.hotel_id`) contiene muchas habitaciones (`rooms.hotel_id`)
-- Un cliente (`users.user_id` con rol CUSTOMER) puede hacer muchas reservas (`reservations.customer_id`)
-- Una habitación (`rooms.room_id`) puede estar asociada a muchas reservas (`reservations.room_id`) en diferentes fechas
-- Una reserva (`reservations.reservation_id`) puede tener un pago asociado (`payments.reservation_id`)
-- Un cliente (`users.user_id`) puede escribir muchas reseñas (`reviews.customer_id`)
-- Un hotel (`hotels.hotel_id`) puede tener muchas reseñas (`reviews.hotel_id`)
+- A user (`users.user_id`) with HOTEL_ADMIN role can manage many hotels (`hotels.owner_id`)
+- A hotel (`hotels.hotel_id`) contains many rooms (`rooms.hotel_id`)
+- A customer (`users.user_id` with CUSTOMER role) can make many reservations (`reservations.customer_id`)
+- A room (`rooms.room_id`) can be associated with many reservations (`reservations.room_id`) on different dates
+- A reservation (`reservations.reservation_id`) can have an associated payment (`payments.reservation_id`)
+- A customer (`users.user_id`) can write many reviews (`reviews.customer_id`)
+- A hotel (`hotels.hotel_id`) can have many reviews (`reviews.hotel_id`)
 
-### Diseño de Base de Datos
+### Database Design
 
-El diseño de la base de datos refleja fielmente el modelo de dominio, asegurando:
+The database design faithfully reflects the domain model, ensuring:
 
-1. **Integridad referencial** mediante el uso de claves foráneas claramente nombradas
-2. **Normalización** para minimizar la redundancia de datos
-3. **Índices** estratégicos para optimizar consultas frecuentes
-4. **Tipos de datos** adecuados para cada atributo
-5. **Convenciones de nomenclatura** consistentes para facilitar mantenimiento
+1. **Referential integrity** through clearly named foreign keys
+2. **Normalization** to minimize data redundancy
+3. Strategic **indexing** to optimize frequent queries
+4. Appropriate **data types** for each attribute
+5. Consistent **naming conventions** to facilitate maintenance
 
-La implementación física utiliza MySQL como sistema de gestión de base de datos relacional, aprovechando sus características de integridad, transacciones y escalabilidad para un sistema de reservas robusto.
+The physical implementation uses MySQL as a relational database management system, leveraging its integrity, transaction, and scalability features for a robust reservation system.
 
-## 🔄 Diagramas de Secuencia
+## Sequence Diagrams
 
-Los siguientes diagramas de secuencia ilustran los flujos principales del sistema:
+The following sequence diagrams illustrate the main system flows:
 
-### 1. Proceso de Reserva
+### 1. Reservation Process
 
-![Proceso de Reserva](diagrams/ReservationSequence.svg)
+![Reservation Process](diagrams/ReservationSequence.svg)
 
-Este diagrama muestra el flujo completo del proceso de reserva, desde la búsqueda inicial de hoteles, la selección de habitación, el proceso de pago, hasta la confirmación final y notificaciones.
+This diagram shows the complete flow of the reservation process, from the initial hotel search, room selection, payment process, to final confirmation and notifications.
 
-### 2. Proceso de Cancelación
+### 2. Cancellation Process
 
-![Proceso de Cancelación](diagrams/CancellationSequence.svg)
+![Cancellation Process](diagrams/CancellationSequence.svg)
 
-Este diagrama ilustra el flujo de cancelación de una reserva, incluyendo las diferentes políticas de cancelación, posibles reembolsos y notificaciones a todas las partes interesadas.
+This diagram illustrates the flow of reservation cancellation, including the different cancellation policies, possible refunds, and notifications to all interested parties.
