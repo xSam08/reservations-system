@@ -1,0 +1,786 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="JNMLaQyWoo6j8WLlFVFm">
+    <mxGraphModel dx="1428" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="frj-qHctGT9CSAwPmqnE-1" value="Customer" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;verticalAlign=bottom;labelPosition=center;verticalLabelPosition=top;align=center;size=65;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="35" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-2" value="Customer UI" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="554" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-3" value="API Gateway" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1063" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-4" value="Auth Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-5" value="Reservation Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="20" width="179" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-6" value="Hotel Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1801" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-7" value="Room Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="2001" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-8" value="Payment Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="2201" y="20" width="154" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-9" value="Notification Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="2405" y="20" width="176" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-10" value="Email Service" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="3006" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-11" value="Hotel Admin" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="3206" y="20" width="150" height="5689" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-12" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=30" vertex="1" parent="1">
+          <mxGeometry x="1579" y="2206" width="711" height="141" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-13" value="[Payment exists]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-12">
+          <mxGeometry x="30" width="681" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-14" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=30" vertex="1" parent="1">
+          <mxGeometry x="84" y="1556" width="3208" height="2467" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-15" value="[Free cancellation available]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-14">
+          <mxGeometry x="30" width="3178" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-16" value="[Cancellation fee applies]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#B3B3B3;strokeWidth=5;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-14">
+          <mxGeometry y="1242" width="3208" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-17" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=30" vertex="1" parent="1">
+          <mxGeometry x="74" y="1433" width="3228" height="3640" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-18" value="[Cancel within free cancellation period]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-17">
+          <mxGeometry x="30" width="3198" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-19" value="[Non-refundable or past cancellation deadline]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#B3B3B3;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-17">
+          <mxGeometry y="2605" width="3228" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-20" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=30;strokeWidth=5;" vertex="1" parent="1">
+          <mxGeometry x="60" y="957" width="3252" height="4267" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-21" value="[Cancellation attempt]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-20">
+          <mxGeometry x="30" width="3222" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-22" value="[User abandons cancellation]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#B3B3B3;strokeWidth=4;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-20">
+          <mxGeometry y="4131" width="3252" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-23" value="opt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=30;strokeWidth=5;" vertex="1" parent="1">
+          <mxGeometry x="84" y="5234" width="1517" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-24" value="[View updated history]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="frj-qHctGT9CSAwPmqnE-23">
+          <mxGeometry x="30" width="1487" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-25" value="Open reservation history" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="123" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-26" value="GET /reservations" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="171" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-27" value="validateToken(token)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1265" y="266" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-28" value="token valid" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-4" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="314" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-29" value="getReservationsByCustomer(customerId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="362" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-30" value="customer&#39;s reservations" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-31" value="reservation list" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="458" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-32" value="Display reservation history" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="506" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-33" value="Select reservation to cancel" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="554" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-34" value="GET /reservations/{reservationId}" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="602" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-35" value="validateToken(token)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1265" y="697" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-36" value="token valid" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-4" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="745" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-37" value="getReservationById(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="793" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-38" value="reservation details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="841" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-39" value="reservation data" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="889" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-40" value="Display reservation details with cancellation option" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="937" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-41" value="Click &quot;Cancel Reservation&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-42" value="GET /reservations/{reservationId}/cancellation-policy" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="1078" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-43" value="getCancellationPolicy(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="1126" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-44" value="getHotelById(hotelId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1741" y="1174" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-45" value="hotel details with policy" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-6" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1744" y="1222" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-46" value="cancellation policy details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="1270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-47" value="policy data" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="1318" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-48" value="Display cancellation policy &amp; confirmation dialog" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="1366" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-49" value="isWithinFreeCancellationPeriod(checkInDate)" style="curved=1;endArrow=block;rounded=0;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1641" y="1506" />
+              <mxPoint x="1641" y="1536" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-50" value="Confirm cancellation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="1629" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-51" value="DELETE /reservations/{reservationId}" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="1677" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-52" value="validateToken(token)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1265" y="1772" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-53" value="token valid" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-4" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="1820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-54" value="cancelReservation(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="1868" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-55" value="updateAvailability(roomId, dates, true)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1841" y="1916" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-56" value="availability updated" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-7" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1844" y="1964" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-57" value="updateStatus(reservationId, &quot;CANCELLED&quot;)" style="curved=1;endArrow=block;rounded=0;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1641" y="2012" />
+              <mxPoint x="1641" y="2042" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-58" value="cancellation successful" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="2090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-59" value="getPaymentByReservation(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1942" y="2138" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-60" value="payment details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-8" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1945" y="2186" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-61" value="processRefund(paymentId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1942" y="2279" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-62" value="refund processed" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-8" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1945" y="2327" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-63" value="createNotification(customerId, &quot;RESERVATION_CANCELLED&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="2387" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-64" value="sendEmail(customerEmail, &quot;Reservation Cancelled&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2796" y="2435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-65" value="email sent" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-10" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2799" y="2483" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-66" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="2531" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-67" value="createNotification(hotelAdminId, &quot;RESERVATION_CANCELLED&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="2581" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-68" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="2629" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-69" value="cancellation confirmation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="2677" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-70" value="Display &quot;Reservation successfully cancelled&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="2725" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-71" value="real-time notification of cancellation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2896" y="2773" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-72" value="Display cancellation fee amount and details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="2866" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-73" value="Acknowledge fee and confirm cancellation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="2914" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-74" value="DELETE /reservations/{reservationId}?acceptFee=true" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="2962" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-75" value="validateToken(token)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1265" y="3057" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-76" value="token valid" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-4" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="3105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-77" value="cancelReservation(reservationId, fee)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="3153" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-78" value="updateAvailability(roomId, dates, true)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1841" y="3201" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-79" value="availability updated" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-7" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1844" y="3249" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-80" value="updateStatus(reservationId, &quot;CANCELLED&quot;)" style="curved=1;endArrow=block;rounded=0;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1641" y="3297" />
+              <mxPoint x="1641" y="3327" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-81" value="getPaymentByReservation(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1942" y="3375" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-82" value="payment details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-8" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1945" y="3423" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-83" value="processPartialRefund(paymentId, amount - fee)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1942" y="3471" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-84" value="partial refund processed" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-8" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1945" y="3519" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-85" value="cancellation with fee successful" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="3567" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-86" value="createNotification(customerId, &quot;RESERVATION_CANCELLED_WITH_FEE&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="3617" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-87" value="sendEmail(customerEmail, &quot;Reservation Cancelled with Fee&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2796" y="3665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-88" value="email sent" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-10" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2799" y="3713" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-89" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="3761" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-90" value="createNotification(hotelAdminId, &quot;RESERVATION_CANCELLED&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="3811" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-91" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="3859" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-92" value="cancellation confirmation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="3907" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-93" value="Display &quot;Reservation cancelled. Partial refund processed.&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="3955" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-94" value="real-time notification of cancellation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2896" y="4003" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-95" value="Display &quot;Reservation cannot be cancelled with refund&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="4106" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-96" value="Proceed with cancellation anyway (no refund)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="4154" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-97" value="DELETE /reservations/{reservationId}?noRefund=true" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="4202" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-98" value="validateToken(token)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1265" y="4297" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-99" value="token valid" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-4" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="4345" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-100" value="cancelWithoutRefund(reservationId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="4393" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-101" value="updateAvailability(roomId, dates, true)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1841" y="4441" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-102" value="availability updated" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-7" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1844" y="4489" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-103" value="updateStatus(reservationId, &quot;CANCELLED_NO_REFUND&quot;)" style="curved=1;endArrow=block;rounded=0;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1641" y="4539" />
+              <mxPoint x="1641" y="4569" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-104" value="cancellation without refund successful" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="4617" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-105" value="createNotification(customerId, &quot;RESERVATION_CANCELLED_NO_REFUND&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="4667" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-106" value="sendEmail(customerEmail, &quot;Reservation Cancelled - No Refund&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2796" y="4715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-107" value="email sent" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-10" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2799" y="4763" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-108" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="4811" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-109" value="createNotification(hotelAdminId, &quot;RESERVATION_CANCELLED&quot;)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1824" y="4861" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-110" value="notification created" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1827" y="4909" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-111" value="cancellation confirmation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="4957" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-112" value="Display &quot;Reservation cancelled without refund&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="5005" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-113" value="real-time notification of cancellation" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-9" target="frj-qHctGT9CSAwPmqnE-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2896" y="5053" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-114" value="Click &quot;Back&quot; or &quot;Close&quot;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="5156" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-115" value="Return to reservation details" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="5204" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-116" value="Navigate to reservation history" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-1" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="371" y="5307" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-117" value="GET /reservations" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="892" y="5355" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-118" value="getReservationsByCustomer(customerId)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1372" y="5450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-119" value="updated reservations list" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-5" target="frj-qHctGT9CSAwPmqnE-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="5498" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-120" value="reservations data" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-3" target="frj-qHctGT9CSAwPmqnE-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="5546" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-121" value="Display updated reservation history" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;endArrow=block;" edge="1" parent="1" source="frj-qHctGT9CSAwPmqnE-2" target="frj-qHctGT9CSAwPmqnE-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="374" y="5594" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-122" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="191" width="261" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-123" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="622" width="261" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-124" value="Shows potential fees and deadline information" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1386" width="584" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-125" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="1697" width="261" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-126" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="2982" width="261" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-127" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="4222" width="261" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="frj-qHctGT9CSAwPmqnE-128" value="Authorization: Bearer {token}" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="654" y="5375" width="261" height="47" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
