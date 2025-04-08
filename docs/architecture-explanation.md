@@ -7,6 +7,7 @@ This document explains the architecture, design patterns, and diagrams used in t
 - [Design Patterns](#design-patterns)
 - [Class Diagram](#class-diagram)
 - [Entity-Relationship Diagram](#entity-relationship-diagram)
+- [Sequence Diagrams](#sequence-diagrams)
 
 ## Design Patterns
 
@@ -61,7 +62,7 @@ In the development of the BreazeInTheMoon system, we have adopted several key de
 
 ## Class Diagram
 
-![Class Diagram](diagrams/ClassDiagram.svg)
+![Class Diagram](UML/ClassDiagram.svg)
 
 The BreazeInTheMoon class diagram is structured in three main layers:
 
@@ -106,7 +107,7 @@ This division facilitates:
 
 ## Entity-Relationship Diagram
 
-![Entity-Relationship Diagram](diagrams/Entity-RelationshipDiagram.drawio)
+![Entity-Relationship Diagram](UML/Entity-RelationshipDiagram.svg)
 
 The entity-relationship diagram shows the database structure of the BreazeInTheMoon system, following best practices for nomenclature to facilitate maintenance and understanding.
 
@@ -219,12 +220,12 @@ The following sequence diagrams illustrate the main system flows:
 
 ### 1. Reservation Process
 
-![Reservation Process](diagrams/ReservationSequence.svg)
+![Reservation Process](UML/ReservationSequence.svg)
 
 This diagram shows the complete flow of the reservation process, from the initial hotel search, room selection, payment process, to final confirmation and notifications.
 
 ### 2. Cancellation Process
 
-![Cancellation Process](diagrams/CancellationSequence.svg)
+![Cancellation Process](UML/CancellationSequence.svg)
 
 This diagram illustrates the flow of reservation cancellation, including the different cancellation policies, possible refunds, and notifications to all interested parties.
