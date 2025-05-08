@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS reservations-system;
+CREATE DATABASE IF NOT EXISTS reservations;
 
-USE reservations-system;
+USE reservations;
 
 CREATE TABLE IF NOT EXISTS users (
     user_id VARCHAR(36) PRIMARY KEY,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS hotels (
     average_rating FLOAT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(user_id)
+    FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS addresses (
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     room_number VARCHAR(20) NOT NULL,
     room_type ENUM('SINGLE', 'DOUBLE', 'TWIN', 'SUITE', 'DELUXE') NOT NULL,
     capacity INT NOT NULL,
-    is_available BOOLEAN DEFAULT TRUE,
+    is_available TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
@@ -97,9 +97,9 @@ CREATE TABLE IF NOT EXISTS reservations (
     guest_count INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id),
-    FOREIGN KEY (room_id) REFERENCES rooms(room_id),
+    FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
     CHECK (check_out_date > check_in_date)
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS payments (
     payment_date DATETIME NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id)
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS reviews (
@@ -135,9 +135,9 @@ CREATE TABLE IF NOT EXISTS reviews (
     content TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id),
-    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id)
+    FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS review_images (
@@ -152,11 +152,11 @@ CREATE TABLE IF NOT EXISTS notifications (
     user_id VARCHAR(36) NOT NULL,
     type ENUM('RESERVATION', 'PAYMENT', 'REVIEW', 'SYSTEM') NOT NULL,
     message TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
+    is_read TINYINT(1) DEFAULT 0,
     data JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS reports (
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS reports (
     data JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id),
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
     CHECK (end_date >= start_date)
 );
 
@@ -176,19 +176,19 @@ CREATE TABLE IF NOT EXISTS favorites (
     favorite_id VARCHAR(36) PRIMARY KEY,
     customer_id VARCHAR(36) NOT NULL,
     hotel_id VARCHAR(36) NOT NULL,
-    FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id),
+    FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
     UNIQUE KEY (customer_id, hotel_id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_hotel_owner ON hotels(owner_id);
-CREATE INDEX IF NOT EXISTS idx_room_hotel ON rooms(hotel_id);
-CREATE INDEX IF NOT EXISTS idx_reservation_customer ON reservations(customer_id);
-CREATE INDEX IF NOT EXISTS idx_reservation_hotel ON reservations(hotel_id);
-CREATE INDEX IF NOT EXISTS idx_reservation_room ON reservations(room_id);
-CREATE INDEX IF NOT EXISTS idx_reservation_dates ON reservations(check_in_date, check_out_date);
-CREATE INDEX IF NOT EXISTS idx_payment_reservation ON payments(reservation_id);
-CREATE INDEX IF NOT EXISTS idx_review_hotel ON reviews(hotel_id);
-CREATE INDEX IF NOT EXISTS idx_review_customer ON reviews(customer_id);
-CREATE INDEX IF NOT EXISTS idx_notification_user ON notifications(user_id);
-CREATE INDEX IF NOT EXISTS idx_report_hotel ON reports(hotel_id);
+CREATE INDEX idx_hotel_owner ON hotels(owner_id);
+CREATE INDEX idx_room_hotel ON rooms(hotel_id);
+CREATE INDEX idx_reservation_customer ON reservations(customer_id);
+CREATE INDEX idx_reservation_hotel ON reservations(hotel_id);
+CREATE INDEX idx_reservation_room ON reservations(room_id);
+CREATE INDEX idx_reservation_dates ON reservations(check_in_date, check_out_date);
+CREATE INDEX idx_payment_reservation ON payments(reservation_id);
+CREATE INDEX idx_review_hotel ON reviews(hotel_id);
+CREATE INDEX idx_review_customer ON reviews(customer_id);
+CREATE INDEX idx_notification_user ON notifications(user_id);
+CREATE INDEX idx_report_hotel ON reports(hotel_id);
