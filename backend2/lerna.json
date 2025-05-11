@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "npmClient": "npm",
+  "packages": [
+    "shared",
+    "api-gateway",
+    "auth-service",
+    "user-service",
+    "hotel-service",
+    "room-service",
+    "reservation-service",
+    "payment-service",
+    "review-service",
+    "notification-service",
+    "report-service"
+  ]
+}
