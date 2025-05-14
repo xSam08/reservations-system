@@ -1,1 +1,81 @@
-<p>hotels works!</p>
+<div class="container mx-auto px-4 py-8">
+  <!-- Search and Filters -->
+  <div class="mb-8 bg-white p-6 rounded-lg shadow-md">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Search Input -->
+      <div>
+        <label for="search" class="block text-sm font-medium text-gray-700">Search Hotels</label>
+        <input
+          type="text"
+          id="search"
+          [(ngModel)]="searchTerm"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Search by name or description"
+        >
+      </div>
+
+      <!-- Location Filter -->
+      <div>
+        <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+        <select
+          id="location"
+          [(ngModel)]="selectedLocation"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+          <option value="">All Locations</option>
+          <option *ngFor="let location of locations" [value]="location">{{location}}</option>
+        </select>
+      </div>
+
+      <!-- Price Range Filters -->
+      <div>
+        <label for="minPrice" class="block text-sm font-medium text-gray-700">Min Price</label>
+        <input
+          type="number"
+          id="minPrice"
+          [(ngModel)]="minPrice"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+      </div>
+
+      <div>
+        <label for="maxPrice" class="block text-sm font-medium text-gray-700">Max Price</label>
+        <input
+          type="number"
+          id="maxPrice"
+          [(ngModel)]="maxPrice"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Hotels Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let hotel of filteredHotels" class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img [src]="hotel.imageUrl" [alt]="hotel.name" class="w-full h-48 object-cover">
+      
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-xl font-bold text-gray-900">{{hotel.name}}</h3>
+          <span class="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+            <span class="mr-1">★</span>
+            {{hotel.rating}}
+          </span>
+        </div>
+        
+        <p class="text-gray-600 mb-4">{{hotel.description}}</p>
+        
+        <div class="flex justify-between items-center">
+          <span class="text-2xl font-bold text-gray-900">${{hotel.price}}</span>
+          <button
+            (click)="makeReservation(hotel.id)"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
