@@ -9,9 +9,14 @@ services:
       - db
 
   frontend:
-    build: ./reservations-frontend
+    build: 
+      context: ./reservations-frontend
+      dockerfile: Dockerfile
     ports:
       - "80:80"
+    volumes:
+      - ./reservations-frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
 
