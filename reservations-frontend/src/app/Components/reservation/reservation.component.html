@@ -1,1 +1,74 @@
-<p>reservation works!</p>
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8">Make a Reservation</h2>
+    
+    <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Dates Selection -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="checkIn" class="block text-sm font-medium text-gray-700">Check-in Date</label>
+          <input type="date" id="checkIn" formControlName="checkInDate"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label for="checkOut" class="block text-sm font-medium text-gray-700">Check-out Date</label>
+          <input type="date" id="checkOut" formControlName="checkOutDate"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <!-- Guest Information -->
+      <div>
+        <label for="guests" class="block text-sm font-medium text-gray-700">Number of Guests</label>
+        <select id="guests" formControlName="guestCount"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+          <option [ngValue]="1">1 Guest</option>
+          <option [ngValue]="2">2 Guests</option>
+          <option [ngValue]="3">3 Guests</option>
+          <option [ngValue]="4">4 Guests</option>
+        </select>
+      </div>
+
+      <!-- Special Requests -->
+      <div>
+        <label for="requests" class="block text-sm font-medium text-gray-700">Special Requests</label>
+        <textarea id="requests" formControlName="specialRequests" rows="3"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Any special requests or requirements?"></textarea>
+      </div>
+
+      <!-- Price Summary -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Price Summary</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span>Room Rate (per night)</span>
+            <span>${{roomRate}}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Number of Nights</span>
+            <span>{{numberOfNights}}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Taxes and Fees</span>
+            <span>${{taxesAndFees}}</span>
+          </div>
+          <div class="border-t pt-2 mt-2">
+            <div class="flex justify-between font-bold">
+              <span>Total</span>
+              <span>${{totalPrice}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end">
+        <button type="submit" [disabled]="!reservationForm.valid"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+          Proceed to Payment
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
