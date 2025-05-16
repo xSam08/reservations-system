@@ -26,9 +26,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Check if user is already logged in
     const token = localStorage.getItem('token');
-    if (token) {
-      this.router.navigate(['/']);
-    }
+    //if (token) {
+    //  this.router.navigate(['/']);
+    //}
   }
 
   onSubmit() {
