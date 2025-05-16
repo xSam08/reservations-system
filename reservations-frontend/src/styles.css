@@ -29,3 +29,7 @@ html, body {
 .card {
   @apply bg-white rounded-lg shadow-md p-6;
 }
+
+.active {
+  @apply text-blue-700 dark:text-blue-500;
+}
