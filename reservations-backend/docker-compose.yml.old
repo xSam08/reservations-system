@@ -1,0 +1,328 @@
+version: '3.8'
+
+services:
+  # Database
+  mysql:
+    image: mysql:8.0
+    container_name: reservations-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: reservations
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - reservations-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: api-gateway
+    container_name: reservations-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - JWT_SECRET=your-super-secret-jwt-key
+      - NODE_ENV=production
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - USER_SERVICE_URL=http://user-service:3002
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+      - RESERVATION_SERVICE_URL=http://reservation-service:3004
+      - REVIEW_SERVICE_URL=http://review-service:3005
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3006
+      - REPORT_SERVICE_URL=http://report-service:3007
+      - PAYMENT_SERVICE_URL=http://payment-service:3008
+      - AVAILABILITY_SERVICE_URL=http://availability-service:3009
+      - SEARCH_SERVICE_URL=http://search-service:3010
+    depends_on:
+      - auth-service
+      - user-service
+      - hotel-service
+      - reservation-service
+      - review-service
+      - notification-service
+      - report-service
+      - payment-service
+      - availability-service
+      - search-service
+    networks:
+      - reservations-network
+
+  # Auth Service
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: auth-service
+    container_name: reservations-auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=your-super-secret-jwt-key
+      - JWT_EXPIRES_IN=24h
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # User Service
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: user-service
+    container_name: reservations-user-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Hotel Service
+  hotel-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: hotel-service
+    container_name: reservations-hotel-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Reservation Service
+  reservation-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: reservation-service
+    container_name: reservations-reservation-service
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3006
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Review Service
+  review-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: review-service
+    container_name: reservations-review-service
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Notification Service
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: notification-service
+    container_name: reservations-notification-service
+    ports:
+      - "3006:3006"
+    environment:
+      - PORT=3006
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=your-email@gmail.com
+      - SMTP_PASS=your-app-password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Report Service
+  report-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: report-service
+    container_name: reservations-report-service
+    ports:
+      - "3007:3007"
+    environment:
+      - PORT=3007
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Payment Service
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: payment-service
+    container_name: reservations-payment-service
+    ports:
+      - "3008:3008"
+    environment:
+      - PORT=3008
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+      - STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+      - STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Availability Service
+  availability-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: availability-service
+    container_name: reservations-availability-service
+    ports:
+      - "3009:3009"
+    environment:
+      - PORT=3009
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=app_user
+      - DB_PASSWORD=app_password
+      - DB_DATABASE=reservations
+      - NODE_ENV=production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Search Service
+  search-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.efficient
+      target: search-service
+    container_name: reservations-search-service
+    ports:
+      - "3010:3010"
+    environment:
+      - PORT=3010
+      - NODE_ENV=production
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+      - AVAILABILITY_SERVICE_URL=http://availability-service:3009
+    depends_on:
+      - hotel-service
+      - availability-service
+    networks:
+      - reservations-network
+    restart: unless-stopped
+
+  # Redis for caching and real-time features
+  redis:
+    image: redis:7-alpine
+    container_name: reservations-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - reservations-network
+    command: redis-server --appendonly yes
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  reservations-network:
+    driver: bridge

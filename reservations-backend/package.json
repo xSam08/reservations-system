@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "install:all": "npm install",
+    "postinstall": "npm install --workspaces",
     "dev": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\" \"npm run dev:user\" \"npm run dev:hotel\" \"npm run dev:reservation\" \"npm run dev:review\" \"npm run dev:notification\" \"npm run dev:report\" \"npm run dev:payment\" \"npm run dev:availability\" \"npm run dev:search\"",
     "dev:gateway": "cd api-gateway && npm run dev",
     "dev:auth": "cd auth-service && npm run dev",
@@ -40,7 +41,8 @@
     "db:down": "docker compose -f docker-compose.db.yml down"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18.0.0"
