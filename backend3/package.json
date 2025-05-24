@@ -1,0 +1,48 @@
+{
+  "name": "reservations-system-backend",
+  "version": "1.0.0",
+  "description": "Microservices-based hotel reservation system backend",
+  "main": "index.js",
+  "workspaces": [
+    "api-gateway",
+    "auth-service",
+    "user-service",
+    "hotel-service",
+    "reservation-service",
+    "review-service",
+    "notification-service",
+    "report-service",
+    "payment-service",
+    "availability-service",
+    "search-service",
+    "shared"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "dev": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\" \"npm run dev:user\" \"npm run dev:hotel\" \"npm run dev:reservation\" \"npm run dev:review\" \"npm run dev:notification\" \"npm run dev:report\" \"npm run dev:payment\" \"npm run dev:availability\" \"npm run dev:search\"",
+    "dev:gateway": "cd api-gateway && npm run dev",
+    "dev:auth": "cd auth-service && npm run dev",
+    "dev:user": "cd user-service && npm run dev",
+    "dev:hotel": "cd hotel-service && npm run dev",
+    "dev:reservation": "cd reservation-service && npm run dev",
+    "dev:review": "cd review-service && npm run dev",
+    "dev:notification": "cd notification-service && npm run dev",
+    "dev:report": "cd report-service && npm run dev",
+    "dev:payment": "cd payment-service && npm run dev",
+    "dev:availability": "cd availability-service && npm run start:dev",
+    "dev:search": "cd search-service && npm run start:dev",
+    "build": "npm run build --workspaces",
+    "start": "npm run start --workspaces",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "db:up": "docker compose -f docker-compose.db.yml up -d",
+    "db:down": "docker compose -f docker-compose.db.yml down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

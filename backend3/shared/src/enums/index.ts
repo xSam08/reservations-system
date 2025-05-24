@@ -1,0 +1,49 @@
+export enum UserRole {
+  CUSTOMER = 'CUSTOMER',
+  HOTEL_ADMIN = 'HOTEL_ADMIN',
+  SYSTEM_ADMIN = 'SYSTEM_ADMIN'
+}
+
+export enum RoomType {
+  SINGLE = 'SINGLE',
+  DOUBLE = 'DOUBLE',
+  TWIN = 'TWIN',
+  SUITE = 'SUITE',
+  DELUXE = 'DELUXE'
+}
+
+export enum ReservationStatus {
+  PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+  REJECTED = 'REJECTED'
+}
+
+export enum NotificationType {
+  RESERVATION = 'RESERVATION',
+  PAYMENT = 'PAYMENT',
+  REVIEW = 'REVIEW',
+  SYSTEM = 'SYSTEM'
+}
+
+export enum ReportType {
+  OCCUPANCY = 'OCCUPANCY',
+  REVENUE = 'REVENUE',
+  CUSTOMER = 'CUSTOMER',
+  TREND = 'TREND'
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED'
+}
+
+export enum PaymentMethod {
+  CREDIT_CARD = 'CREDIT_CARD',
+  DEBIT_CARD = 'DEBIT_CARD',
+  PAYPAL = 'PAYPAL',
+  BANK_TRANSFER = 'BANK_TRANSFER'
+}

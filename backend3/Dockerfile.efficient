@@ -1,0 +1,251 @@
+# ===== EFFICIENT MULTI-STAGE DOCKERFILE =====
+FROM node:18-alpine AS base
+
+# Install system dependencies
+RUN apk add --no-cache dumb-init
+
+# Create app directory
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+
+# ===== SHARED PACKAGE STAGE =====
+FROM base AS shared-builder
+
+# Copy and build shared package
+COPY shared/ ./shared/
+RUN cd shared && npm install && npm run build
+
+# ===== SERVICE-SPECIFIC STAGES =====
+
+# Auth Service
+FROM base AS auth-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY auth-service/package.json ./
+RUN npm install --production
+
+FROM auth-service-deps AS auth-service-builder
+COPY auth-service/ ./
+RUN npm run build
+
+FROM base AS auth-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=auth-service-builder /app/dist ./dist
+COPY --from=auth-service-builder /app/package.json ./
+COPY --from=auth-service-deps /app/node_modules ./node_modules
+EXPOSE 3001
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# User Service
+FROM base AS user-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY user-service/package.json ./
+RUN npm install --production
+
+FROM user-service-deps AS user-service-builder
+COPY user-service/ ./
+RUN npm run build
+
+FROM base AS user-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=user-service-builder /app/dist ./dist
+COPY --from=user-service-builder /app/package.json ./
+COPY --from=user-service-deps /app/node_modules ./node_modules
+EXPOSE 3002
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3002/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Hotel Service
+FROM base AS hotel-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY hotel-service/package.json ./
+RUN npm install --production
+
+FROM hotel-service-deps AS hotel-service-builder
+COPY hotel-service/ ./
+RUN npm run build
+
+FROM base AS hotel-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=hotel-service-builder /app/dist ./dist
+COPY --from=hotel-service-builder /app/package.json ./
+COPY --from=hotel-service-deps /app/node_modules ./node_modules
+EXPOSE 3003
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3003/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Reservation Service
+FROM base AS reservation-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY reservation-service/package.json ./
+RUN npm install --production
+
+FROM reservation-service-deps AS reservation-service-builder
+COPY reservation-service/ ./
+RUN npm run build
+
+FROM base AS reservation-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=reservation-service-builder /app/dist ./dist
+COPY --from=reservation-service-builder /app/package.json ./
+COPY --from=reservation-service-deps /app/node_modules ./node_modules
+EXPOSE 3004
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3004/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Review Service
+FROM base AS review-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY review-service/package.json ./
+RUN npm install --production
+
+FROM review-service-deps AS review-service-builder
+COPY review-service/ ./
+RUN npm run build
+
+FROM base AS review-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=review-service-builder /app/dist ./dist
+COPY --from=review-service-builder /app/package.json ./
+COPY --from=review-service-deps /app/node_modules ./node_modules
+EXPOSE 3005
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3005/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Notification Service
+FROM base AS notification-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY notification-service/package.json ./
+RUN npm install --production
+
+FROM notification-service-deps AS notification-service-builder
+COPY notification-service/ ./
+RUN npm run build
+
+FROM base AS notification-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=notification-service-builder /app/dist ./dist
+COPY --from=notification-service-builder /app/package.json ./
+COPY --from=notification-service-deps /app/node_modules ./node_modules
+EXPOSE 3006
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3006/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Report Service
+FROM base AS report-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY report-service/package.json ./
+RUN npm install --production
+
+FROM report-service-deps AS report-service-builder
+COPY report-service/ ./
+RUN npm run build
+
+FROM base AS report-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=report-service-builder /app/dist ./dist
+COPY --from=report-service-builder /app/package.json ./
+COPY --from=report-service-deps /app/node_modules ./node_modules
+EXPOSE 3007
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3007/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Payment Service
+FROM base AS payment-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY payment-service/package.json ./
+RUN npm install --production
+
+FROM payment-service-deps AS payment-service-builder
+COPY payment-service/ ./
+RUN npm run build
+
+FROM base AS payment-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=payment-service-builder /app/dist ./dist
+COPY --from=payment-service-builder /app/package.json ./
+COPY --from=payment-service-deps /app/node_modules ./node_modules
+EXPOSE 3008
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3008/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Availability Service
+FROM base AS availability-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY availability-service/package.json ./
+RUN npm install --production
+
+FROM availability-service-deps AS availability-service-builder
+COPY availability-service/ ./
+RUN npm run build
+
+FROM base AS availability-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=availability-service-builder /app/dist ./dist
+COPY --from=availability-service-builder /app/package.json ./
+COPY --from=availability-service-deps /app/node_modules ./node_modules
+EXPOSE 3009
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3009/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# Search Service
+FROM base AS search-service-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY search-service/package.json ./
+RUN npm install --production
+
+FROM search-service-deps AS search-service-builder
+COPY search-service/ ./
+RUN npm run build
+
+FROM base AS search-service
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=search-service-builder /app/dist ./dist
+COPY --from=search-service-builder /app/package.json ./
+COPY --from=search-service-deps /app/node_modules ./node_modules
+EXPOSE 3010
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3010/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/main.js"]
+
+# API Gateway
+FROM base AS api-gateway-deps
+COPY --from=shared-builder /app/shared ./shared
+COPY api-gateway/package.json ./
+RUN npm install --production
+
+FROM api-gateway-deps AS api-gateway-builder
+COPY api-gateway/ ./
+RUN npm run build
+
+FROM base AS api-gateway
+COPY --from=shared-builder /app/shared ./shared
+COPY --from=api-gateway-builder /app/dist ./dist
+COPY --from=api-gateway-builder /app/package.json ./
+COPY --from=api-gateway-deps /app/node_modules ./node_modules
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+USER nodejs
+CMD ["dumb-init", "node", "dist/index.js"]
