@@ -9,7 +9,7 @@
 - **Database:** MySQL  
 - **API Docs:** Swagger  
 - **Containerization:** Docker & Docker Compose  
-- **Admin Tool:** phpMyAdmin  
+- **Admin Tool:** phpMyAdmin
 
 ## 📦 Project Structure
 
