@@ -10,9 +10,12 @@ export const createServiceProxy = (serviceName: keyof typeof config.services, op
     target: serviceUrl,
     changeOrigin: true,
     pathRewrite: {
-      [`^/api/${serviceName}`]: '',
+      [`^/api/${serviceName}`]: `/${serviceName}`,
     },
     timeout: 30000, // 30 seconds timeout
+    followRedirects: true,
+    secure: false,
+    preserveHeaderKeyCase: false,
     onError: (err: any, req: Request, res: Response) => {
       console.error(`Proxy error for ${serviceName}:`, {
         error: err.message,
