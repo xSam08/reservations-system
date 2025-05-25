@@ -5,11 +5,23 @@ import { SearchService } from '../services/search.service';
 import { HotelSearchDto, RoomSearchDto, SearchSuggestionsDto } from '../dto/search.dto';
 
 @ApiTags('Search')
-@Controller('search')
+@Controller()
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
-  @Get('hotels')
+  @Get('health')
+  @ApiOperation({ summary: 'Health check endpoint' })
+  @ApiResponse({ status: 200, description: 'Service is healthy' })
+  getHealth() {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'search-service',
+      version: '1.0.0'
+    };
+  }
+
+  @Get('search/hotels')
   @ApiOperation({ summary: 'Search hotels with filters' })
   @ApiResponse({ status: 200, description: 'Hotels retrieved successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
@@ -22,7 +34,7 @@ export class SearchController {
     }
   }
 
-  @Get('rooms')
+  @Get('search/rooms')
   @ApiOperation({ summary: 'Search rooms within a hotel' })
   @ApiResponse({ status: 200, description: 'Rooms retrieved successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
@@ -36,7 +48,7 @@ export class SearchController {
     }
   }
 
-  @Get('suggestions')
+  @Get('search/suggestions')
   @ApiOperation({ summary: 'Get search suggestions' })
   @ApiResponse({ status: 200, description: 'Suggestions retrieved successfully' })
   @ApiQuery({ name: 'query', required: true, description: 'Search query' })
@@ -51,7 +63,7 @@ export class SearchController {
     }
   }
 
-  @Post('hotels')
+  @Post('search/hotels')
   @ApiOperation({ summary: 'Advanced hotel search with complex filters' })
   @ApiResponse({ status: 200, description: 'Hotels retrieved successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
@@ -64,7 +76,7 @@ export class SearchController {
     }
   }
 
-  @Post('rooms')
+  @Post('search/rooms')
   @ApiOperation({ summary: 'Advanced room search with complex filters' })
   @ApiResponse({ status: 200, description: 'Rooms retrieved successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
