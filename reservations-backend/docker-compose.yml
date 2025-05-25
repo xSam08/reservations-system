@@ -46,6 +46,12 @@ services:
     environment:
       - NODE_ENV=production
       - JWT_SECRET=your-secret-key
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - USER_SERVICE_URL=http://user-service:3002
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+      - RESERVATION_SERVICE_URL=http://reservation-service:3004
+      - SEARCH_SERVICE_URL=http://search-service:3010
+      - AVAILABILITY_SERVICE_URL=http://availability-service:3005
     depends_on:
       auth-service:
         condition: service_healthy
@@ -73,8 +79,8 @@ services:
       - NODE_ENV=production
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USERNAME=app_user
-      - DB_PASSWORD=app_password
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
       - DB_DATABASE=reservations
       - JWT_SECRET=your-secret-key
       - REDIS_HOST=redis
@@ -104,8 +110,8 @@ services:
       - NODE_ENV=production
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USERNAME=app_user
-      - DB_PASSWORD=app_password
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
       - DB_DATABASE=reservations
       - JWT_SECRET=your-secret-key
     depends_on:
@@ -131,8 +137,8 @@ services:
       - NODE_ENV=production
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USERNAME=app_user
-      - DB_PASSWORD=app_password
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
       - DB_DATABASE=reservations
       - JWT_SECRET=your-secret-key
     depends_on:
@@ -158,8 +164,8 @@ services:
       - NODE_ENV=production
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USERNAME=app_user
-      - DB_PASSWORD=app_password
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
       - DB_DATABASE=reservations
       - JWT_SECRET=your-secret-key
     depends_on:
@@ -185,8 +191,8 @@ services:
       - NODE_ENV=production
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USERNAME=app_user
-      - DB_PASSWORD=app_password
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
       - DB_DATABASE=reservations
       - JWT_SECRET=your-secret-key
     depends_on:
@@ -199,9 +205,37 @@ services:
       timeout: 10s
       retries: 5
 
+  # Availability Service
+  availability-service:
+    build:
+      context: ./availability-service
+      dockerfile: Dockerfile
+    container_name: reservations-availability-service
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
+      - DB_DATABASE=reservations
+      - JWT_SECRET=your-secret-key
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - reservations-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
+      timeout: 10s
+      retries: 5
+
 volumes:
   mysql_data:
 
 networks:
   reservations-network:
-    driver: bridge
+    external: true
+    name: reservations-system_reservations-network

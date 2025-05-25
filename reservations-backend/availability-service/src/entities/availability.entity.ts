@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('room_availability')
-@Index('idx_room_date', ['roomId', 'date'])
+@Index('idx_room_date', ['room_id', 'date'])
 export class Availability {
   @PrimaryGeneratedColumn('uuid')
   availability_id: string;
