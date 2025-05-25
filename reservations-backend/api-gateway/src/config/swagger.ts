@@ -918,6 +918,302 @@ export const swaggerSpec = {
         }
       }
     },
+    '/api/search/hotels': {
+      get: {
+        tags: ['Search'],
+        summary: 'Search hotels with filters',
+        security: [],
+        parameters: [
+          { name: 'city', in: 'query', schema: { type: 'string' } },
+          { name: 'country', in: 'query', schema: { type: 'string' } },
+          { name: 'minPrice', in: 'query', schema: { type: 'number' } },
+          { name: 'maxPrice', in: 'query', schema: { type: 'number' } },
+          { name: 'rating', in: 'query', schema: { type: 'number', minimum: 0, maximum: 5 } },
+          { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
+          { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }
+        ],
+        responses: {
+          '200': {
+            description: 'Hotels search results',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ['Search'],
+        summary: 'Advanced hotel search',
+        security: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  checkIn: { type: 'string', format: 'date' },
+                  checkOut: { type: 'string', format: 'date' },
+                  guests: { type: 'integer', minimum: 1 },
+                  city: { type: 'string' },
+                  country: { type: 'string' },
+                  minPrice: { type: 'number' },
+                  maxPrice: { type: 'number' },
+                  amenities: { type: 'array', items: { type: 'string' } },
+                  rating: { type: 'number', minimum: 0, maximum: 5 }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Advanced search results',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/search/rooms': {
+      get: {
+        tags: ['Search'],
+        summary: 'Search rooms in a hotel',
+        security: [],
+        parameters: [
+          { name: 'hotelId', in: 'query', required: true, schema: { type: 'string' } },
+          { name: 'checkIn', in: 'query', schema: { type: 'string', format: 'date' } },
+          { name: 'checkOut', in: 'query', schema: { type: 'string', format: 'date' } },
+          { name: 'guests', in: 'query', schema: { type: 'integer', minimum: 1 } },
+          { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
+          { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }
+        ],
+        responses: {
+          '200': {
+            description: 'Room search results',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ['Search'],
+        summary: 'Advanced room search',
+        security: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  hotelId: { type: 'string' },
+                  checkIn: { type: 'string', format: 'date' },
+                  checkOut: { type: 'string', format: 'date' },
+                  guests: { type: 'integer', minimum: 1 },
+                  roomType: { type: 'string' },
+                  minPrice: { type: 'number' },
+                  maxPrice: { type: 'number' },
+                  amenities: { type: 'array', items: { type: 'string' } }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Advanced room search results',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/search/suggestions': {
+      get: {
+        tags: ['Search'],
+        summary: 'Get search suggestions',
+        security: [],
+        parameters: [
+          { name: 'query', in: 'query', required: true, schema: { type: 'string' } },
+          { name: 'type', in: 'query', schema: { type: 'string', enum: ['hotels', 'cities', 'countries'] } },
+          { name: 'limit', in: 'query', schema: { type: 'integer', default: 5, maximum: 20 } }
+        ],
+        responses: {
+          '200': {
+            description: 'Search suggestions',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              id: { type: 'string' },
+                              name: { type: 'string' },
+                              type: { type: 'string' },
+                              description: { type: 'string' }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/availability': {
+      post: {
+        tags: ['Availability'],
+        summary: 'Create room availability',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['roomId', 'date', 'availableRooms'],
+                properties: {
+                  roomId: { type: 'string' },
+                  date: { type: 'string', format: 'date' },
+                  availableRooms: { type: 'integer', minimum: 0 },
+                  status: { type: 'string', enum: ['AVAILABLE', 'UNAVAILABLE', 'MAINTENANCE'], default: 'AVAILABLE' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '201': {
+            description: 'Availability created successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/availability/room/{roomId}': {
+      get: {
+        tags: ['Availability'],
+        summary: 'Get room availability by date range',
+        security: [],
+        parameters: [
+          { name: 'roomId', in: 'path', required: true, schema: { type: 'string' } },
+          { name: 'startDate', in: 'query', schema: { type: 'string', format: 'date' } },
+          { name: 'endDate', in: 'query', schema: { type: 'string', format: 'date' } }
+        ],
+        responses: {
+          '200': {
+            description: 'Room availability retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              availabilityId: { type: 'string' },
+                              roomId: { type: 'string' },
+                              date: { type: 'string', format: 'date' },
+                              availableRooms: { type: 'integer' },
+                              status: { type: 'string', enum: ['AVAILABLE', 'UNAVAILABLE', 'MAINTENANCE'] }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/availability/check': {
+      post: {
+        tags: ['Availability'],
+        summary: 'Check availability for reservation',
+        security: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['roomId', 'checkInDate', 'checkOutDate', 'requiredRooms'],
+                properties: {
+                  roomId: { type: 'string' },
+                  checkInDate: { type: 'string', format: 'date' },
+                  checkOutDate: { type: 'string', format: 'date' },
+                  requiredRooms: { type: 'integer', minimum: 1 }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Availability check result',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'object',
+                          properties: {
+                            available: { type: 'boolean' },
+                            roomId: { type: 'string' },
+                            checkInDate: { type: 'string', format: 'date' },
+                            checkOutDate: { type: 'string', format: 'date' },
+                            requiredRooms: { type: 'integer' },
+                            availableRooms: { type: 'integer' }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     '/api/reservations': {
       get: {
         tags: ['Reservations'],
@@ -973,6 +1269,88 @@ export const swaggerSpec = {
           }
         }
       }
+    },
+    '/api/reviews': {
+      get: {
+        tags: ['Reviews'],
+        summary: 'Get reviews',
+        security: [],
+        parameters: [
+          { name: 'hotelId', in: 'query', schema: { type: 'string' } }
+        ],
+        responses: {
+          '200': {
+            description: 'Reviews retrieved successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ['Reviews'],
+        summary: 'Create a new review',
+        responses: {
+          '201': {
+            description: 'Review created successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/notifications': {
+      get: {
+        tags: ['Notifications'],
+        summary: 'Get user notifications',
+        responses: {
+          '200': {
+            description: 'Notifications retrieved successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/payments': {
+      post: {
+        tags: ['Payments'],
+        summary: 'Process payment',
+        responses: {
+          '201': {
+            description: 'Payment processed successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/reports': {
+      post: {
+        tags: ['Reports'],
+        summary: 'Generate report',
+        responses: {
+          '201': {
+            description: 'Report generated successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
     }
   },
   tags: [
@@ -997,6 +1375,10 @@ export const swaggerSpec = {
       description: 'Hotel and room search functionality'
     },
     {
+      name: 'Availability',
+      description: 'Room availability management'
+    },
+    {
       name: 'Reservations',
       description: 'Reservation management'
     },
@@ -1009,12 +1391,12 @@ export const swaggerSpec = {
       description: 'User notifications'
     },
     {
-      name: 'Reports',
-      description: 'Analytics and reporting'
-    },
-    {
       name: 'Payments',
       description: 'Payment processing'
+    },
+    {
+      name: 'Reports',
+      description: 'Analytics and reporting'
     }
   ]
 };
