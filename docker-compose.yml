@@ -60,12 +60,9 @@ services:
       - NODE_ENV=production
       - JWT_SECRET=your-secret-key
     depends_on:
-      auth-service:
-        condition: service_healthy
-      hotel-service:
-        condition: service_healthy
-      reservation-service:
-        condition: service_healthy
+      - auth-service
+      - hotel-service
+      - reservation-service
     networks:
       - reservations-network
     healthcheck:
