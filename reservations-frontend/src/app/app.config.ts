@@ -1,10 +1,22 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+// Angular imports
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Routes
 import { routes } from './app.routes';
 
-export const appConfig: ApplicationConfig = {
+// Toastr for notifications
+import { ToastrModule } from 'ngx-toastr';
+
+export const appConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    importProvidersFrom(
+      HttpClientModule,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot()
+    ),
     provideRouter(routes)
   ]
 };
