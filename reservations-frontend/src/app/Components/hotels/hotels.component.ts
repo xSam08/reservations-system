@@ -16,7 +16,7 @@ interface Hotel {
 @Component({
   selector: 'app-hotels',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './hotels.component.html',
   styleUrl: './hotels.component.css'
 })
