@@ -57,6 +57,12 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - USER_SERVICE_URL=http://user-service:3002
+      - HOTEL_SERVICE_URL=http://hotel-service:3003
+      - RESERVATION_SERVICE_URL=http://reservation-service:3004
+      - SEARCH_SERVICE_URL=http://search-service:3010
+      - AVAILABILITY_SERVICE_URL=http://availability-service:3005
       - NODE_ENV=production
       - JWT_SECRET=your-secret-key
     depends_on:

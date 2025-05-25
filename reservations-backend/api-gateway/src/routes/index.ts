@@ -18,8 +18,38 @@ router.get('/availability/health', createHealthProxy('availability'));
 router.get('/search/health', createHealthProxy('search'));
 
 // Authentication routes (no auth required, but rate limited)
-router.use('/auth/register', authRateLimitMiddleware);
-router.use('/auth/login', authRateLimitMiddleware);
+router.post('/auth/register', authRateLimitMiddleware, async (req, res) => {
+  try {
+    const response = await fetch('http://auth-service:3001/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body)
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (error) {
+    res.status(503).json({ success: false, message: 'Auth service unavailable' });
+  }
+});
+
+router.post('/auth/login', authRateLimitMiddleware, async (req, res) => {
+  try {
+    const response = await fetch('http://auth-service:3001/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body)
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (error) {
+    res.status(503).json({ success: false, message: 'Auth service unavailable' });
+  }
+});
+
 router.use('/auth', createServiceProxy('auth'));
 
 // User management routes (authentication required)

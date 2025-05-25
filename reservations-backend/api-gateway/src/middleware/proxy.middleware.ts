@@ -16,6 +16,8 @@ export const createServiceProxy = (serviceName: keyof typeof config.services, op
     followRedirects: true,
     secure: false,
     preserveHeaderKeyCase: false,
+    xfwd: true,
+    ws: false,
     onError: (err: any, req: Request, res: Response) => {
       console.error(`Proxy error for ${serviceName}:`, {
         error: err.message,
