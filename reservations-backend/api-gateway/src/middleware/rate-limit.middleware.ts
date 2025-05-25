@@ -30,7 +30,7 @@ export const rateLimitMiddleware = rateLimit({
 // More restrictive rate limiting for auth endpoints
 export const authRateLimitMiddleware = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 auth requests per windowMs
+  max: 20, // limit each IP to 20 auth requests per windowMs
   message: {
     success: false,
     message: 'Too many authentication attempts from this IP, please try again later.',
