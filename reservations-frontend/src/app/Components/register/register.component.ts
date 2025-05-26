@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { AuthServiceService } from '../../Services/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, ToastrModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -15,7 +17,9 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthServiceService,
+    private toastr: ToastrService
   ) {
     this.registerForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -30,7 +34,7 @@ export class RegisterComponent {
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (password && confirmPassword && password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
     } else {
@@ -38,13 +42,22 @@ export class RegisterComponent {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.registerForm.valid) {
-      // TODO: Implement actual registration logic with your backend service
-      console.log('Register form submitted:', this.registerForm.value);
-      
-      // Simulate successful registration
-      this.router.navigate(['/login']);
+      const { name, email, password } = this.registerForm.value;
+
+      this.authService.register(name, email, password).subscribe({
+        next: () => {
+          this.toastr.success('¡Usuario creado! Ya puedes iniciar sesión.', 'Success');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Registration error:', error);
+          this.toastr.error(error.error?.message || 'An error occurred during registration.', 'Error');
+        }
+      });
+    } else {
+      this.toastr.warning('Por favor, llena el formulario correctamente.', 'Warning');
     }
   }
 }
