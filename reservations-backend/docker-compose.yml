@@ -1,16 +1,16 @@
 services:
   # Database Services
-  mysql:
+  mysql-db:
     image: mysql:8.0
     container_name: reservations-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: reservations
-      MYSQL_USER: app_user
-      MYSQL_PASSWORD: app_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database.sql:/docker-entrypoint-initdb.d/init.sql
@@ -26,7 +26,7 @@ services:
     container_name: reservations-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
     networks:
       - reservations-network
     healthcheck:
@@ -42,22 +42,36 @@ services:
     container_name: reservations-api-gateway
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "${API_GATEWAY_PORT}:3000"
     environment:
-      NODE_ENV: production
-      JWT_SECRET: your-secret-key
-      AUTH_SERVICE_URL: http://auth-service:3001
-      USER_SERVICE_URL: http://user-service:3002
-      HOTEL_SERVICE_URL: http://hotel-service:3003
-      RESERVATION_SERVICE_URL: http://reservation-service:3004
-      SEARCH_SERVICE_URL: http://search-service:3010
-      AVAILABILITY_SERVICE_URL: http://availability-service:3005
+      - NODE_ENV=${NODE_ENV}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - AUTH_SERVICE_URL=${AUTH_SERVICE_URL}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+      - HOTEL_SERVICE_URL=${HOTEL_SERVICE_URL}
+      - RESERVATION_SERVICE_URL=${RESERVATION_SERVICE_URL}
+      - SEARCH_SERVICE_URL=${SEARCH_SERVICE_URL}
+      - AVAILABILITY_SERVICE_URL=${AVAILABILITY_SERVICE_URL}
+      - REVIEW_SERVICE_URL=${REVIEW_SERVICE_URL}
+      - NOTIFICATION_SERVICE_URL=${NOTIFICATION_SERVICE_URL}
+      - PAYMENT_SERVICE_URL=${PAYMENT_SERVICE_URL}
+      - REPORT_SERVICE_URL=${REPORT_SERVICE_URL}
     depends_on:
       auth-service:
         condition: service_healthy
       hotel-service:
         condition: service_healthy
       reservation-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      payment-service:
+        condition: service_healthy
+      review-service:
+        condition: service_healthy
+      report-service:
         condition: service_healthy
     networks:
       - reservations-network

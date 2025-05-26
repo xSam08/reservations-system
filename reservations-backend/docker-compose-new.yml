@@ -4,15 +4,16 @@ services:
     image: mysql:8.0
     container_name: reservations-mysql
     restart: unless-stopped
-    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./reservations-backend/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - reservations-network
     healthcheck:
@@ -33,25 +34,10 @@ services:
       timeout: 5s
       retries: 5
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: reservations-phpmyadmin
-    restart: always
-    ports:
-      - "8080:80"
-    environment:
-      PMA_HOST: mysql-db
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    depends_on:
-      mysql-db:
-        condition: service_healthy
-    networks:
-      - reservations-network
-
   # API Gateway
   api-gateway:
     build:
-      context: ./reservations-backend/api-gateway
+      context: ./api-gateway
       dockerfile: Dockerfile
     container_name: reservations-api-gateway
     restart: unless-stopped
@@ -80,13 +66,13 @@ services:
       reservation-service:
         condition: service_healthy
       notification-service:
-        condition: service_started
+        condition: service_healthy
       payment-service:
-        condition: service_started
+        condition: service_healthy
       review-service:
-        condition: service_started
+        condition: service_healthy
       report-service:
-        condition: service_started
+        condition: service_healthy
     networks:
       - reservations-network
     healthcheck:
@@ -97,7 +83,7 @@ services:
   # Authentication Service
   auth-service:
     build:
-      context: ./reservations-backend/auth-service
+      context: ./auth-service
       dockerfile: Dockerfile
     container_name: reservations-auth-service
     restart: unless-stopped
@@ -132,7 +118,7 @@ services:
   # User Service
   user-service:
     build:
-      context: ./reservations-backend/user-service
+      context: ./user-service
       dockerfile: Dockerfile
     container_name: reservations-user-service
     restart: unless-stopped
@@ -159,7 +145,7 @@ services:
   # Hotel Service
   hotel-service:
     build:
-      context: ./reservations-backend/hotel-service
+      context: ./hotel-service
       dockerfile: Dockerfile
     container_name: reservations-hotel-service
     restart: unless-stopped
@@ -186,7 +172,7 @@ services:
   # Reservation Service
   reservation-service:
     build:
-      context: ./reservations-backend/reservation-service
+      context: ./reservation-service
       dockerfile: Dockerfile
     container_name: reservations-reservation-service
     restart: unless-stopped
@@ -213,7 +199,7 @@ services:
   # Review Service
   review-service:
     build:
-      context: ./reservations-backend/review-service
+      context: ./review-service
       dockerfile: Dockerfile
     container_name: reservations-review-service
     restart: unless-stopped
@@ -240,7 +226,7 @@ services:
   # Notification Service
   notification-service:
     build:
-      context: ./reservations-backend/notification-service
+      context: ./notification-service
       dockerfile: Dockerfile
     container_name: reservations-notification-service
     restart: unless-stopped
@@ -264,7 +250,7 @@ services:
   # Report Service
   report-service:
     build:
-      context: ./reservations-backend/report-service
+      context: ./report-service
       dockerfile: Dockerfile
     container_name: reservations-report-service
     restart: unless-stopped
@@ -287,7 +273,7 @@ services:
   # Payment Service
   payment-service:
     build:
-      context: ./reservations-backend/payment-service
+      context: ./payment-service
       dockerfile: Dockerfile
     container_name: reservations-payment-service
     restart: unless-stopped
@@ -309,7 +295,7 @@ services:
   # Availability Service
   availability-service:
     build:
-      context: ./reservations-backend/availability-service
+      context: ./availability-service
       dockerfile: Dockerfile
     container_name: reservations-availability-service
     restart: unless-stopped
@@ -336,7 +322,7 @@ services:
   # Search Service
   search-service:
     build:
-      context: ./reservations-backend/search-service
+      context: ./search-service
       dockerfile: Dockerfile
     container_name: reservations-search-service
     restart: unless-stopped
@@ -360,26 +346,9 @@ services:
       timeout: 10s
       retries: 5
 
-  # Frontend
-  frontend:
-    build: 
-      context: ./reservations-frontend
-      dockerfile: Dockerfile
-    container_name: reservations-frontend
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - api-gateway
-    networks:
-      - reservations-network
-
 volumes:
   mysql_data:
 
 networks:
   reservations-network:
     driver: bridge
-
-# To use this docker-compose.yml, you need to create a .env file in the reservations-backend directory
-# Copy the .env.example file and update the values accordingly

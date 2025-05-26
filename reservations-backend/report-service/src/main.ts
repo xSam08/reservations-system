@@ -1,17 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-
-@Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-  ],
-})
-class AppModule {}
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -46,8 +36,9 @@ async function bootstrap() {
   const port = process.env.PORT || 3007;
   await app.listen(port);
   
-  console.log(`📋 Report Service running on port ${port}`);
+  console.log(`📊 Report Service running on port ${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
+  console.log(`📈 Analytics and reporting system ready`);
 }
 
 bootstrap();

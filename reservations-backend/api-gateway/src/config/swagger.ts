@@ -893,6 +893,560 @@ export const swaggerSpec = {
         }
       }
     },
+    '/api/hotels/{hotelId}/rooms': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get rooms for a specific hotel',
+        security: [],
+        parameters: [
+          {
+            name: 'hotelId',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          },
+          {
+            name: 'page',
+            in: 'query',
+            schema: { type: 'integer', default: 1 }
+          },
+          {
+            name: 'limit',
+            in: 'query',
+            schema: { type: 'integer', default: 10 }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Hotel rooms retrieved successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ['Rooms'],
+        summary: 'Create a new room for a hotel (Admin only)',
+        parameters: [
+          {
+            name: 'hotelId',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['type', 'capacity', 'basePrice'],
+                properties: {
+                  type: { type: 'string' },
+                  capacity: { type: 'integer', minimum: 1 },
+                  basePrice: { type: 'number', minimum: 0 },
+                  amenities: { type: 'array', items: { type: 'string' } },
+                  images: { type: 'array', items: { type: 'string', format: 'uri' } },
+                  description: { type: 'string' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '201': {
+            description: 'Room created successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: { $ref: '#/components/schemas/Room' }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/rooms': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get all rooms with filters',
+        security: [],
+        parameters: [
+          {
+            name: 'hotelId',
+            in: 'query',
+            schema: { type: 'string', format: 'uuid' }
+          },
+          {
+            name: 'type',
+            in: 'query',
+            schema: { type: 'string' }
+          },
+          {
+            name: 'minPrice',
+            in: 'query',
+            schema: { type: 'number', minimum: 0 }
+          },
+          {
+            name: 'maxPrice',
+            in: 'query',
+            schema: { type: 'number', minimum: 0 }
+          },
+          {
+            name: 'capacity',
+            in: 'query',
+            schema: { type: 'integer', minimum: 1 }
+          },
+          {
+            name: 'page',
+            in: 'query',
+            schema: { type: 'integer', default: 1 }
+          },
+          {
+            name: 'limit',
+            in: 'query',
+            schema: { type: 'integer', default: 10 }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Rooms retrieved successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ['Rooms'],
+        summary: 'Create a new room (Admin only)',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['hotelId', 'type', 'capacity', 'basePrice'],
+                properties: {
+                  hotelId: { type: 'string', format: 'uuid' },
+                  type: { type: 'string' },
+                  capacity: { type: 'integer', minimum: 1 },
+                  basePrice: { type: 'number', minimum: 0 },
+                  amenities: { type: 'array', items: { type: 'string' } },
+                  images: { type: 'array', items: { type: 'string', format: 'uri' } },
+                  description: { type: 'string' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '201': {
+            description: 'Room created successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: { $ref: '#/components/schemas/Room' }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/rooms/{id}': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get room by ID',
+        security: [],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Room retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: { $ref: '#/components/schemas/Room' }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          '404': {
+            description: 'Room not found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' }
+              }
+            }
+          }
+        }
+      },
+      put: {
+        tags: ['Rooms'],
+        summary: 'Update room by ID (Admin only)',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string' },
+                  capacity: { type: 'integer', minimum: 1 },
+                  basePrice: { type: 'number', minimum: 0 },
+                  amenities: { type: 'array', items: { type: 'string' } },
+                  images: { type: 'array', items: { type: 'string', format: 'uri' } },
+                  description: { type: 'string' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Room updated successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: { $ref: '#/components/schemas/Room' }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      delete: {
+        tags: ['Rooms'],
+        summary: 'Delete room by ID (Admin only)',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Room deleted successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/rooms/types': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get all available room types',
+        security: [],
+        responses: {
+          '200': {
+            description: 'Room types retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              type: { type: 'string' },
+                              description: { type: 'string' },
+                              count: { type: 'integer' }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/rooms/{id}/availability': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get room availability for date range',
+        security: [],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          },
+          {
+            name: 'checkIn',
+            in: 'query',
+            schema: { type: 'string', format: 'date' }
+          },
+          {
+            name: 'checkOut',
+            in: 'query',
+            schema: { type: 'string', format: 'date' }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Room availability retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'object',
+                          properties: {
+                            roomId: { type: 'string' },
+                            isAvailable: { type: 'boolean' },
+                            status: { type: 'string', enum: ['AVAILABLE', 'UNAVAILABLE'] },
+                            availabilityPeriods: {
+                              type: 'array',
+                              items: {
+                                type: 'object',
+                                properties: {
+                                  date: { type: 'string', format: 'date' },
+                                  available: { type: 'boolean' },
+                                  price: { type: 'number' }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      patch: {
+        tags: ['Rooms'],
+        summary: 'Update room availability (Admin only)',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['isAvailable'],
+                properties: {
+                  isAvailable: { type: 'boolean' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Room availability updated successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ApiResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/hotels/{hotelId}/rooms/available': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Get available rooms for specific dates in a hotel',
+        security: [],
+        parameters: [
+          {
+            name: 'hotelId',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', format: 'uuid' }
+          },
+          {
+            name: 'checkIn',
+            in: 'query',
+            required: true,
+            schema: { type: 'string', format: 'date' }
+          },
+          {
+            name: 'checkOut',
+            in: 'query',
+            required: true,
+            schema: { type: 'string', format: 'date' }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Available rooms retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        data: {
+                          type: 'array',
+                          items: { $ref: '#/components/schemas/Room' }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/api/rooms/search': {
+      get: {
+        tags: ['Rooms'],
+        summary: 'Search available rooms across all hotels',
+        security: [],
+        parameters: [
+          {
+            name: 'city',
+            in: 'query',
+            schema: { type: 'string' }
+          },
+          {
+            name: 'country',
+            in: 'query',
+            schema: { type: 'string' }
+          },
+          {
+            name: 'checkIn',
+            in: 'query',
+            schema: { type: 'string', format: 'date' }
+          },
+          {
+            name: 'checkOut',
+            in: 'query',
+            schema: { type: 'string', format: 'date' }
+          },
+          {
+            name: 'type',
+            in: 'query',
+            schema: { type: 'string' }
+          },
+          {
+            name: 'minPrice',
+            in: 'query',
+            schema: { type: 'number', minimum: 0 }
+          },
+          {
+            name: 'maxPrice',
+            in: 'query',
+            schema: { type: 'number', minimum: 0 }
+          },
+          {
+            name: 'guests',
+            in: 'query',
+            schema: { type: 'integer', minimum: 1 }
+          },
+          {
+            name: 'page',
+            in: 'query',
+            schema: { type: 'integer', default: 1 }
+          },
+          {
+            name: 'limit',
+            in: 'query',
+            schema: { type: 'integer', default: 10 }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Room search results retrieved successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/PaginatedResponse' }
+              }
+            }
+          }
+        }
+      }
+    },
     '/api/search': {
       post: {
         tags: ['Search'],

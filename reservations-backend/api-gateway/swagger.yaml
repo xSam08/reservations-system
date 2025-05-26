@@ -1575,31 +1575,613 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
 
-  /notifications:
-    get:
+  /notifications/test:
+    post:
       tags:
         - Notifications
-      summary: Get user notifications
+      summary: Send test email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - to
+              properties:
+                to:
+                  type: string
+                  format: email
+                  description: Email address to send test email
+                subject:
+                  type: string
+                  description: Optional subject for test email
       responses:
         '200':
-          description: Notifications retrieved successfully
+          description: Test email sent successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
 
-  /payments:
+  /notifications/send-email:
     post:
       tags:
-        - Payments
-      summary: Process payment
+        - Notifications
+      summary: Send custom email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - to
+                - subject
+                - text
+              properties:
+                to:
+                  type: string
+                  format: email
+                subject:
+                  type: string
+                text:
+                  type: string
+                html:
+                  type: string
+                  description: HTML content (optional)
       responses:
-        '201':
-          description: Payment processed successfully
+        '200':
+          description: Email sent successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+
+  /notifications/reservation-confirmation:
+    post:
+      tags:
+        - Notifications
+      summary: Send reservation confirmation email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - to
+                - reservationData
+              properties:
+                to:
+                  type: string
+                  format: email
+                reservationData:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    hotelName:
+                      type: string
+                    checkIn:
+                      type: string
+                    checkOut:
+                      type: string
+                    guests:
+                      type: integer
+                    totalPrice:
+                      type: number
+      responses:
+        '200':
+          description: Confirmation email sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /payments/create:
+    post:
+      tags:
+        - Payments
+      summary: Create a new payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reservationId
+                - userId
+                - amount
+                - method
+                - cardNumber
+                - cardHolderName
+                - expiryMonth
+                - expiryYear
+                - cvv
+                - billingEmail
+              properties:
+                reservationId:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                amount:
+                  type: number
+                  minimum: 0
+                currency:
+                  type: string
+                  default: USD
+                method:
+                  type: string
+                  enum: [CREDIT_CARD, DEBIT_CARD, PAYPAL, BANK_TRANSFER]
+                description:
+                  type: string
+                cardNumber:
+                  type: string
+                cardHolderName:
+                  type: string
+                expiryMonth:
+                  type: string
+                expiryYear:
+                  type: string
+                cvv:
+                  type: string
+                billingEmail:
+                  type: string
+                  format: email
+      responses:
+        '201':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /payments/process:
+    post:
+      tags:
+        - Payments
+      summary: Process a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - paymentId
+              properties:
+                paymentId:
+                  type: string
+                  format: uuid
+                paymentIntentId:
+                  type: string
+      responses:
+        '200':
+          description: Payment processing initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /payments/{id}:
+    get:
+      tags:
+        - Payments
+      summary: Get payment by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Payment retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /payments/refund:
+    post:
+      tags:
+        - Payments
+      summary: Refund a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - paymentId
+                - reason
+              properties:
+                paymentId:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 0
+                  description: Partial refund amount (optional)
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Payment refunded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reviews:
+    get:
+      tags:
+        - Reviews
+      summary: Get reviews with filters
+      security: []
+      parameters:
+        - in: query
+          name: hotelId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: userId
+          schema:
+            type: string
+        - in: query
+          name: minRating
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - in: query
+          name: maxRating
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Reviews retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+    post:
+      tags:
+        - Reviews
+      summary: Create a new review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reservationId
+                - userId
+                - hotelId
+                - rating
+                - title
+                - comment
+              properties:
+                reservationId:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                hotelId:
+                  type: string
+                  format: uuid
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                title:
+                  type: string
+                comment:
+                  type: string
+                cleanlinessRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                serviceRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                locationRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                valueRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Review created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reviews/{id}:
+    get:
+      tags:
+        - Reviews
+      summary: Get review by ID
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Review retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+    put:
+      tags:
+        - Reviews
+      summary: Update review
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                title:
+                  type: string
+                comment:
+                  type: string
+                cleanlinessRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                serviceRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                locationRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                valueRating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        '200':
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+    delete:
+      tags:
+        - Reviews
+      summary: Delete review
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Review deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reviews/hotel/{hotelId}/stats:
+    get:
+      tags:
+        - Reviews
+      summary: Get hotel review statistics
+      security: []
+      parameters:
+        - in: path
+          name: hotelId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Hotel statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          totalReviews:
+                            type: integer
+                          averageRating:
+                            type: number
+                          ratingDistribution:
+                            type: object
+                            properties:
+                              "5": { type: integer }
+                              "4": { type: integer }
+                              "3": { type: integer }
+                              "2": { type: integer }
+                              "1": { type: integer }
+
+  /reports/generate:
+    post:
+      tags:
+        - Reports
+      summary: Generate a new report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - period
+                - startDate
+                - endDate
+              properties:
+                type:
+                  type: string
+                  enum: [RESERVATIONS, REVENUE, OCCUPANCY, CUSTOMER, HOTEL_PERFORMANCE, PAYMENT]
+                period:
+                  type: string
+                  enum: [DAILY, WEEKLY, MONTHLY, YEARLY, CUSTOM]
+                startDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+                hotelId:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                format:
+                  type: string
+                  enum: [JSON, CSV, PDF]
+                  default: JSON
+      responses:
+        '201':
+          description: Report generation started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reports:
+    get:
+      tags:
+        - Reports
+      summary: Get all reports
+      responses:
+        '200':
+          description: Reports retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reports/{id}:
+    get:
+      tags:
+        - Reports
+      summary: Get report by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Report retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+    delete:
+      tags:
+        - Reports
+      summary: Delete report
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Report deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /reports/types/available:
+    get:
+      tags:
+        - Reports
+      summary: Get available report types
+      responses:
+        '200':
+          description: Available report types retrieved
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          types:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                name:
+                                  type: string
+                                description:
+                                  type: string
 
   /search/hotels:
     get:

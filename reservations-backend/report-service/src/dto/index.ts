@@ -6,4 +6,4 @@ export class BasicDto {
   id?: string;
 }
 
-// Service-specific DTOs will be added here
+export * from './report.dto';
