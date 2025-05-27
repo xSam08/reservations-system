@@ -15,7 +15,12 @@ export const appConfig = {
     importProvidersFrom(
       HttpClientModule,
       BrowserAnimationsModule,
-      ToastrModule.forRoot()
+      ToastrModule.forRoot({
+        positionClass: 'toast-bottom-left',
+        toastClass: 'ngx-toastr',
+        enableHtml: true,
+        preventDuplicates: true
+      })
     ),
     provideRouter(routes)
   ]

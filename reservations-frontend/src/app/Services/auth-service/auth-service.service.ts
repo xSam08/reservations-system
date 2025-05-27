@@ -19,6 +19,10 @@ export class AuthServiceService {
     return !!sessionStorage.getItem('token');
   }
 
+  register(name: string, email: string, password: string): Observable<any> {
+    return this.http.post(this.apiUrl + 'register', { name, email, password, role: 'CUSTOMER' });
+  }
+
   login(email: string, password: string): Observable<any> {
     return this.http.post(this.apiUrl + "login", { email, password }).pipe(
       tap((response: any) => {
@@ -26,6 +30,8 @@ export class AuthServiceService {
         
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('role', response.data.user.role);
+        sessionStorage.setItem('userId', response.data.user.userId);
+        sessionStorage.setItem('name', response.data.user.name);
         this.loggedIn.next(true);
       })
     );

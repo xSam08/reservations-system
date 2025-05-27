@@ -40,8 +40,7 @@ export class HeaderComponent implements OnInit {
     const token = sessionStorage.getItem('token');
     if (!token) return;
 
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('role');
+    sessionStorage.clear();
     this.isLoggedIn = false;
     this.role = null;
     this.router.navigate(['/login']);
