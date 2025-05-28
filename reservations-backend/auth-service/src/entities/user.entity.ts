@@ -25,6 +25,15 @@ export class User {
   })
   role!: UserRole;
 
+  @Column({ default: false })
+  email_verified!: boolean;
+
+  @Column({ nullable: true })
+  email_verification_token!: string;
+
+  @Column({ nullable: true })
+  email_verification_expires!: Date;
+
   @CreateDateColumn()
   created_at!: Date;
 

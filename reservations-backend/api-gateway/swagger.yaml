@@ -6,21 +6,49 @@ info:
   contact:
     name: API Support
     email: support@reservations.com
-
 servers:
-  - url: http://localhost:3000/api
-    description: Development server
-
+- url: http://localhost:3000/api
+  description: Development server
 security:
-  - bearerAuth: []
-
+- bearerAuth: []
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
+    user_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    availability_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    reservation_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    search_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    review_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    notification_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    payment_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    report_bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
   schemas:
     ApiResponse:
       type: object
@@ -35,7 +63,6 @@ components:
           type: array
           items:
             type: string
-
     User:
       type: object
       properties:
@@ -49,14 +76,16 @@ components:
           type: string
         role:
           type: string
-          enum: [CUSTOMER, HOTEL_ADMIN, SYSTEM_ADMIN]
+          enum:
+          - CUSTOMER
+          - HOTEL_ADMIN
+          - SYSTEM_ADMIN
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-
     Hotel:
       type: object
       properties:
@@ -86,7 +115,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-
     Address:
       type: object
       properties:
@@ -100,7 +128,6 @@ components:
           type: string
         zipCode:
           type: string
-
     Room:
       type: object
       properties:
@@ -132,7 +159,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-
     HotelStatistics:
       type: object
       properties:
@@ -150,7 +176,6 @@ components:
           type: number
         totalReviews:
           type: integer
-
     PaginatedResponse:
       type: object
       properties:
@@ -166,11 +191,14 @@ components:
           type: integer
         totalPages:
           type: integer
-
     ReservationStatus:
       type: string
-      enum: [PENDING, CONFIRMED, CANCELLED, COMPLETED, REJECTED]
-
+      enum:
+      - PENDING
+      - CONFIRMED
+      - CANCELLED
+      - COMPLETED
+      - REJECTED
     Reservation:
       type: object
       properties:
@@ -214,12 +242,209 @@ components:
         updatedAt:
           type: string
           format: date-time
-
+    UpdateUserDto:
+      type: object
+      properties: {}
+    ReservationResponseDto:
+      type: object
+      properties:
+        reservationId:
+          type: string
+          description: Reservation ID
+        customerId:
+          type: string
+          description: Customer ID
+        hotelId:
+          type: string
+          description: Hotel ID
+        roomId:
+          type: string
+          description: Room ID
+        checkInDate:
+          format: date-time
+          type: string
+          description: Check-in date
+        checkOutDate:
+          format: date-time
+          type: string
+          description: Check-out date
+        status:
+          type: string
+          description: Reservation status
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+        guestCount:
+          type: number
+          description: Number of guests
+        totalPrice:
+          type: object
+          description: Total price information
+        specialRequests:
+          type: string
+          description: Special requests
+          nullable: true
+        cancellationReason:
+          type: string
+          description: Cancellation reason
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+      required:
+      - reservationId
+      - customerId
+      - hotelId
+      - roomId
+      - checkInDate
+      - checkOutDate
+      - status
+      - guestCount
+      - totalPrice
+      - specialRequests
+      - cancellationReason
+      - createdAt
+      - updatedAt
+    CreateReservationDto:
+      type: object
+      properties:
+        hotelId:
+          type: string
+          description: Hotel ID
+          example: uuid-hotel-id
+        roomId:
+          type: string
+          description: Room ID
+          example: uuid-room-id
+        checkInDate:
+          type: string
+          description: Check-in date
+          example: '2024-12-25'
+        checkOutDate:
+          type: string
+          description: Check-out date
+          example: '2024-12-30'
+        guestCount:
+          type: number
+          description: Number of guests
+          example: 2
+        specialRequests:
+          type: string
+          description: Special requests
+          example: Late check-in requested
+      required:
+      - hotelId
+      - roomId
+      - checkInDate
+      - checkOutDate
+      - guestCount
+    UpdateReservationDto:
+      type: object
+      properties:
+        checkInDate:
+          type: string
+          description: Check-in date
+          example: '2024-12-25'
+        checkOutDate:
+          type: string
+          description: Check-out date
+          example: '2024-12-30'
+        status:
+          type: string
+          description: Reservation status
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+        guestCount:
+          type: number
+          description: Number of guests
+          example: 2
+        specialRequests:
+          type: string
+          description: Special requests
+          example: Late check-in requested
+    UpdateReservationStatusDto:
+      type: object
+      properties:
+        status:
+          type: string
+          description: New reservation status
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+        reason:
+          type: string
+          description: Reason for status change
+          example: Customer requested cancellation
+      required:
+      - status
+    CancelReservationDto:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Cancellation reason
+          example: Change of plans
+      required:
+      - reason
+    CreateReviewDto:
+      type: object
+      properties: {}
+    UpdateReviewDto:
+      type: object
+      properties: {}
+    SendTestEmailDto:
+      type: object
+      properties: {}
+    SendEmailDto:
+      type: object
+      properties: {}
+    GenerateReportDto:
+      type: object
+      properties: {}
+    CreatePaymentDto:
+      type: object
+      properties: {}
+    ProcessPaymentDto:
+      type: object
+      properties: {}
+    RefundPaymentDto:
+      type: object
+      properties: {}
+    CreateAvailabilityDto:
+      type: object
+      properties: {}
+    CheckAvailabilityDto:
+      type: object
+      properties: {}
+    UpdateAvailabilityDto:
+      type: object
+      properties: {}
+    HotelSearchDto:
+      type: object
+      properties: {}
+    RoomSearchDto:
+      type: object
+      properties: {}
 paths:
   /auth/login:
     post:
       tags:
-        - Authentication
+      - Authentication
       summary: User login
       security: []
       requestBody:
@@ -240,11 +465,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /auth/register:
     post:
       tags:
-        - Authentication
+      - Authentication
       summary: User registration
       security: []
       requestBody:
@@ -264,7 +488,9 @@ paths:
                   type: string
                 role:
                   type: string
-                  enum: [CUSTOMER, HOTEL_ADMIN]
+                  enum:
+                  - CUSTOMER
+                  - HOTEL_ADMIN
       responses:
         '201':
           description: User created successfully
@@ -272,70 +498,95 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /users/profile:
     get:
-      tags:
-        - Users
-      summary: Get user profile
+      operationId: UsersController_getProfile
+      summary: Get current user profile
+      parameters:
+      - name: x-user-id
+        required: true
+        in: header
+        schema:
+          type: string
       responses:
         '200':
-          description: User profile retrieved
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/User'
-
+          description: Profile retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+    patch:
+      operationId: UsersController_updateProfile
+      summary: Update current user profile
+      parameters:
+      - name: x-user-id
+        required: true
+        in: header
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: Profile updated successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
   /hotels:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get all hotels
       security: []
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: city
-          schema:
-            type: string
-        - in: query
-          name: country
-          schema:
-            type: string
-        - in: query
-          name: minPrice
-          schema:
-            type: number
-        - in: query
-          name: maxPrice
-          schema:
-            type: number
-        - in: query
-          name: sortBy
-          schema:
-            type: string
-            enum: [created_at, average_rating, name]
-            default: created_at
-        - in: query
-          name: sortOrder
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: desc
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: country
+        schema:
+          type: string
+      - in: query
+        name: minPrice
+        schema:
+          type: number
+      - in: query
+        name: maxPrice
+        schema:
+          type: number
+      - in: query
+        name: sortBy
+        schema:
+          type: string
+          enum:
+          - created_at
+          - average_rating
+          - name
+          default: created_at
+      - in: query
+        name: sortOrder
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
       responses:
         '200':
           description: Hotels retrieved successfully
@@ -343,10 +594,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     post:
       tags:
-        - Hotels
+      - Hotels
       summary: Create a new hotel
       requestBody:
         required: true
@@ -355,9 +605,9 @@ paths:
             schema:
               type: object
               required:
-                - name
-                - description
-                - address
+              - name
+              - description
+              - address
               properties:
                 name:
                   type: string
@@ -391,30 +641,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/search:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Search hotels by name, description, or location
       security: []
       parameters:
-        - in: query
-          name: q
-          required: true
-          schema:
-            type: string
-          description: Search query
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
+      - in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        description: Search query
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
       responses:
         '200':
           description: Hotels search results
@@ -422,35 +671,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/my-hotels:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotels owned by current user
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: sortBy
-          schema:
-            type: string
-            enum: [created_at, average_rating, name]
-            default: created_at
-        - in: query
-          name: sortOrder
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: desc
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: sortBy
+        schema:
+          type: string
+          enum:
+          - created_at
+          - average_rating
+          - name
+          default: created_at
+      - in: query
+        name: sortOrder
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
       responses:
         '200':
           description: User's hotels retrieved successfully
@@ -458,29 +711,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/owner/{ownerId}:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotels by owner ID
       security: []
       parameters:
-        - in: path
-          name: ownerId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
+      - in: path
+        name: ownerId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
       responses:
         '200':
           description: Hotels by owner retrieved successfully
@@ -488,19 +740,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/{hotelId}:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotel by ID
       security: []
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Hotel retrieved successfully
@@ -508,17 +759,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     put:
       tags:
-        - Hotels
+      - Hotels
       summary: Update hotel
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -558,17 +808,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     delete:
       tags:
-        - Hotels
+      - Hotels
       summary: Delete hotel
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Hotel deleted successfully
@@ -576,34 +825,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/{hotelId}/rooms:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotel rooms
       security: []
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: available
-          schema:
-            type: boolean
-          description: Filter by availability
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: available
+        schema:
+          type: boolean
+        description: Filter by availability
       responses:
         '200':
           description: Hotel rooms retrieved successfully
@@ -611,33 +859,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/{hotelId}/reservations:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotel reservations
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: status
-          schema:
-            type: string
-            enum: [PENDING, CONFIRMED, CANCELLED, COMPLETED]
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
       responses:
         '200':
           description: Hotel reservations retrieved successfully
@@ -645,28 +896,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/{hotelId}/statistics:
     get:
       tags:
-        - Hotels
+      - Hotels
       summary: Get hotel statistics
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: startDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: endDate
-          schema:
-            type: string
-            format: date
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: startDate
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: endDate
+        schema:
+          type: string
+          format: date
       responses:
         '200':
           description: Hotel statistics retrieved successfully
@@ -674,18 +924,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /hotels/{hotelId}/status:
     patch:
       tags:
-        - Hotels
+      - Hotels
       summary: Update hotel status
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -693,11 +942,14 @@ paths:
             schema:
               type: object
               required:
-                - status
+              - status
               properties:
                 status:
                   type: string
-                  enum: [ACTIVE, INACTIVE, SUSPENDED]
+                  enum:
+                  - ACTIVE
+                  - INACTIVE
+                  - SUSPENDED
       responses:
         '200':
           description: Hotel status updated successfully
@@ -705,46 +957,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /rooms:
     get:
       tags:
-        - Rooms
+      - Rooms
       summary: Get all rooms with filtering and pagination
       security: []
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: hotelId
-          schema:
-            type: string
-          description: Filter by hotel ID
-        - in: query
-          name: type
-          schema:
-            type: string
-            enum: [SINGLE, DOUBLE, TWIN, SUITE, DELUXE]
-        - in: query
-          name: minPrice
-          schema:
-            type: number
-        - in: query
-          name: maxPrice
-          schema:
-            type: number
-        - in: query
-          name: available
-          schema:
-            type: boolean
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: hotelId
+        schema:
+          type: string
+        description: Filter by hotel ID
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - SINGLE
+          - DOUBLE
+          - TWIN
+          - SUITE
+          - DELUXE
+      - in: query
+        name: minPrice
+        schema:
+          type: number
+      - in: query
+        name: maxPrice
+        schema:
+          type: number
+      - in: query
+        name: available
+        schema:
+          type: boolean
       responses:
         '200':
           description: Rooms retrieved successfully
@@ -752,10 +1008,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     post:
       tags:
-        - Rooms
+      - Rooms
       summary: Create a new room
       requestBody:
         required: true
@@ -764,11 +1019,11 @@ paths:
             schema:
               type: object
               required:
-                - hotelId
-                - roomNumber
-                - roomType
-                - capacity
-                - price
+              - hotelId
+              - roomNumber
+              - roomType
+              - capacity
+              - price
               properties:
                 hotelId:
                   type: string
@@ -776,7 +1031,12 @@ paths:
                   type: string
                 roomType:
                   type: string
-                  enum: [SINGLE, DOUBLE, TWIN, SUITE, DELUXE]
+                  enum:
+                  - SINGLE
+                  - DOUBLE
+                  - TWIN
+                  - SUITE
+                  - DELUXE
                 capacity:
                   type: integer
                   minimum: 1
@@ -801,11 +1061,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /rooms/types:
     get:
       tags:
-        - Rooms
+      - Rooms
       summary: Get available room types
       security: []
       responses:
@@ -815,68 +1074,77 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: string
-                          enum: [SINGLE, DOUBLE, TWIN, SUITE, DELUXE]
-
+                - $ref: '#/components/schemas/ApiResponse'
+                - type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - SINGLE
+                        - DOUBLE
+                        - TWIN
+                        - SUITE
+                        - DELUXE
   /rooms/search:
     get:
       tags:
-        - Rooms
+      - Rooms
       summary: Search available rooms across all hotels
       security: []
       parameters:
-        - in: query
-          name: city
-          schema:
-            type: string
-        - in: query
-          name: country
-          schema:
-            type: string
-        - in: query
-          name: checkIn
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: checkOut
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: type
-          schema:
-            type: string
-            enum: [SINGLE, DOUBLE, TWIN, SUITE, DELUXE]
-        - in: query
-          name: minPrice
-          schema:
-            type: number
-        - in: query
-          name: maxPrice
-          schema:
-            type: number
-        - in: query
-          name: guests
-          schema:
-            type: integer
-            minimum: 1
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: country
+        schema:
+          type: string
+      - in: query
+        name: checkIn
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: checkOut
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - SINGLE
+          - DOUBLE
+          - TWIN
+          - SUITE
+          - DELUXE
+      - in: query
+        name: minPrice
+        schema:
+          type: number
+      - in: query
+        name: maxPrice
+        schema:
+          type: number
+      - in: query
+        name: guests
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
       responses:
         '200':
           description: Room search results
@@ -884,19 +1152,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /rooms/{roomId}:
     get:
       tags:
-        - Rooms
+      - Rooms
       summary: Get room by ID
       security: []
       parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: roomId
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Room retrieved successfully
@@ -904,22 +1171,21 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Room'
-
+                - $ref: '#/components/schemas/ApiResponse'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Room'
     put:
       tags:
-        - Rooms
+      - Rooms
       summary: Update room
       parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: roomId
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -931,7 +1197,12 @@ paths:
                   type: string
                 roomType:
                   type: string
-                  enum: [SINGLE, DOUBLE, TWIN, SUITE, DELUXE]
+                  enum:
+                  - SINGLE
+                  - DOUBLE
+                  - TWIN
+                  - SUITE
+                  - DELUXE
                 capacity:
                   type: integer
                   minimum: 1
@@ -955,17 +1226,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     delete:
       tags:
-        - Rooms
+      - Rooms
       summary: Delete room
       parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: roomId
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Room deleted successfully
@@ -973,29 +1243,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /rooms/{roomId}/availability:
     get:
       tags:
-        - Rooms
+      - Rooms
       summary: Get room availability for specific dates
       security: []
       parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: checkIn
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: checkOut
-          schema:
-            type: string
-            format: date
+      - in: path
+        name: roomId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: checkIn
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: checkOut
+        schema:
+          type: string
+          format: date
       responses:
         '200':
           description: Room availability retrieved successfully
@@ -1003,36 +1272,37 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          roomId:
-                            type: string
-                          isAvailable:
-                            type: boolean
-                          status:
-                            type: string
-                            enum: [AVAILABLE, UNAVAILABLE]
-                          checkInDate:
-                            type: string
-                            format: date-time
-                          checkOutDate:
-                            type: string
-                            format: date-time
-
+                - $ref: '#/components/schemas/ApiResponse'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        roomId:
+                          type: string
+                        isAvailable:
+                          type: boolean
+                        status:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - UNAVAILABLE
+                        checkInDate:
+                          type: string
+                          format: date-time
+                        checkOutDate:
+                          type: string
+                          format: date-time
     put:
       tags:
-        - Rooms
+      - Rooms
       summary: Update room availability status
       parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
+      - in: path
+        name: roomId
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -1040,7 +1310,7 @@ paths:
             schema:
               type: object
               required:
-                - isAvailable
+              - isAvailable
               properties:
                 isAvailable:
                   type: boolean
@@ -1051,811 +1321,621 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /reservations:
     get:
-      tags:
-        - Reservations
+      operationId: ReservationController_getAllReservations
       summary: Get all reservations with filtering
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: status
-          schema:
-            $ref: '#/components/schemas/ReservationStatus'
-        - in: query
-          name: hotelId
-          schema:
-            type: string
-        - in: query
-          name: customerId
-          schema:
-            type: string
-        - in: query
-          name: checkInDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: checkOutDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: sortBy
-          schema:
-            type: string
-            enum: [created_at, check_in_date, total_price]
-            default: created_at
-        - in: query
-          name: sortOrder
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: desc
+      - name: status
+        required: false
+        in: query
+        description: Filter by status
+        schema:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+          type: string
+      - name: hotelId
+        required: false
+        in: query
+        description: Filter by hotel ID
+        schema:
+          type: string
+      - name: customerId
+        required: false
+        in: query
+        description: Filter by customer ID
+        schema:
+          type: string
+      - name: fromDate
+        required: false
+        in: query
+        description: Filter from date (YYYY-MM-DD)
+        schema:
+          example: '2024-01-01'
+          type: string
+      - name: toDate
+        required: false
+        in: query
+        description: Filter to date (YYYY-MM-DD)
+        schema:
+          example: '2024-12-31'
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          default: 1
+          example: 1
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          default: 10
+          example: 10
+          type: number
       responses:
         '200':
           description: Reservations retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/PaginatedResponse'
-
-    post:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationResponseDto'
       tags:
-        - Reservations
+      - Reservations
+      security:
+      - bearer: []
+    post:
+      operationId: ReservationController_createReservation
       summary: Create a new reservation
+      parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - hotelId
-                - roomId
-                - checkInDate
-                - checkOutDate
-                - guestCount
-              properties:
-                hotelId:
-                  type: string
-                roomId:
-                  type: string
-                checkInDate:
-                  type: string
-                  format: date
-                checkOutDate:
-                  type: string
-                  format: date
-                guestCount:
-                  type: integer
-                  minimum: 1
-                specialRequests:
-                  type: string
+              $ref: '#/components/schemas/CreateReservationDto'
       responses:
         '201':
           description: Reservation created successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '400':
+          description: Invalid reservation data
+        '409':
+          description: Room not available for selected dates
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/pending:
     get:
-      tags:
-        - Reservations
-      summary: Get pending reservations
+      operationId: ReservationController_getPendingReservations
+      summary: Get all pending reservations
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: hotelId
-          schema:
-            type: string
+      - name: status
+        required: false
+        in: query
+        description: Filter by status
+        schema:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+          type: string
+      - name: hotelId
+        required: false
+        in: query
+        description: Filter by hotel ID
+        schema:
+          type: string
+      - name: customerId
+        required: false
+        in: query
+        description: Filter by customer ID
+        schema:
+          type: string
+      - name: fromDate
+        required: false
+        in: query
+        description: Filter from date
+        schema:
+          example: '2024-01-01'
+          type: string
+      - name: toDate
+        required: false
+        in: query
+        description: Filter to date
+        schema:
+          example: '2024-12-31'
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          default: 1
+          example: 1
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          default: 10
+          example: 10
+          type: number
       responses:
         '200':
           description: Pending reservations retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/PaginatedResponse'
-
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationResponseDto'
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/history:
     get:
-      tags:
-        - Reservations
-      summary: Get reservation history
+      operationId: ReservationController_getReservationHistory
+      summary: Get reservation history (completed/cancelled)
       parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: startDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: endDate
-          schema:
-            type: string
-            format: date
+      - name: status
+        required: false
+        in: query
+        description: Filter by status
+        schema:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+          type: string
+      - name: hotelId
+        required: false
+        in: query
+        description: Filter by hotel ID
+        schema:
+          type: string
+      - name: customerId
+        required: false
+        in: query
+        description: Filter by customer ID
+        schema:
+          type: string
+      - name: fromDate
+        required: false
+        in: query
+        description: Filter from date
+        schema:
+          example: '2024-01-01'
+          type: string
+      - name: toDate
+        required: false
+        in: query
+        description: Filter to date
+        schema:
+          example: '2024-12-31'
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          default: 1
+          example: 1
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          default: 10
+          example: 10
+          type: number
       responses:
         '200':
           description: Reservation history retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/PaginatedResponse'
-
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationResponseDto'
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/user/{userId}:
     get:
-      tags:
-        - Reservations
-      summary: Get reservations by user
+      operationId: ReservationController_getReservationsByUser
+      summary: Get reservations by user ID
       parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: status
-          schema:
-            $ref: '#/components/schemas/ReservationStatus'
+      - name: userId
+        required: true
+        in: path
+        description: User ID
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Filter by status
+        schema:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+          type: string
+      - name: hotelId
+        required: false
+        in: query
+        description: Filter by hotel ID
+        schema:
+          type: string
+      - name: customerId
+        required: false
+        in: query
+        description: Filter by customer ID
+        schema:
+          type: string
+      - name: fromDate
+        required: false
+        in: query
+        description: Filter from date
+        schema:
+          example: '2024-01-01'
+          type: string
+      - name: toDate
+        required: false
+        in: query
+        description: Filter to date
+        schema:
+          example: '2024-12-31'
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          default: 1
+          example: 1
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          default: 10
+          example: 10
+          type: number
       responses:
         '200':
           description: User reservations retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/PaginatedResponse'
-
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationResponseDto'
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/hotel/{hotelId}:
     get:
-      tags:
-        - Reservations
-      summary: Get reservations by hotel
+      operationId: ReservationController_getReservationsByHotel
+      summary: Get reservations by hotel ID
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: status
-          schema:
-            $ref: '#/components/schemas/ReservationStatus'
-        - in: query
-          name: checkInDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: checkOutDate
-          schema:
-            type: string
-            format: date
+      - name: hotelId
+        required: true
+        in: path
+        description: Hotel ID
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Filter by status
+        schema:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - COMPLETED
+          - REJECTED
+          type: string
+      - name: customerId
+        required: false
+        in: query
+        description: Filter by customer ID
+        schema:
+          type: string
+      - name: fromDate
+        required: false
+        in: query
+        description: Filter from date
+        schema:
+          example: '2024-01-01'
+          type: string
+      - name: toDate
+        required: false
+        in: query
+        description: Filter to date
+        schema:
+          example: '2024-12-31'
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number
+        schema:
+          default: 1
+          example: 1
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Items per page
+        schema:
+          default: 10
+          example: 10
+          type: number
       responses:
         '200':
           description: Hotel reservations retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/PaginatedResponse'
-
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationResponseDto'
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/{id}:
     get:
-      tags:
-        - Reservations
+      operationId: ReservationController_getReservationById
       summary: Get reservation by ID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       responses:
         '200':
           description: Reservation retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
-    put:
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '404':
+          description: Reservation not found
       tags:
-        - Reservations
-      summary: Update reservation
+      - Reservations
+      security:
+      - bearer: []
+    put:
+      operationId: ReservationController_updateReservation
+      summary: Update reservation by ID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                checkInDate:
-                  type: string
-                  format: date
-                checkOutDate:
-                  type: string
-                  format: date
-                guestCount:
-                  type: integer
-                  minimum: 1
-                specialRequests:
-                  type: string
+              $ref: '#/components/schemas/UpdateReservationDto'
       responses:
         '200':
           description: Reservation updated successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
-    delete:
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '404':
+          description: Reservation not found
       tags:
-        - Reservations
-      summary: Delete reservation
+      - Reservations
+      security:
+      - bearer: []
+    delete:
+      operationId: ReservationController_deleteReservation
+      summary: Delete reservation by ID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       responses:
         '200':
           description: Reservation deleted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
+        '404':
+          description: Reservation not found
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/{id}/status:
     put:
-      tags:
-        - Reservations
+      operationId: ReservationController_updateReservationStatus
       summary: Update reservation status
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - status
-              properties:
-                status:
-                  $ref: '#/components/schemas/ReservationStatus'
-                reason:
-                  type: string
-                  description: Required for cancellation or rejection
+              $ref: '#/components/schemas/UpdateReservationStatusDto'
       responses:
         '200':
           description: Reservation status updated successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '404':
+          description: Reservation not found
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/{id}/confirm:
     post:
-      tags:
-        - Reservations
-      summary: Confirm reservation
+      operationId: ReservationController_confirmReservation
+      summary: Confirm a reservation
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                notes:
-                  type: string
-                  description: Optional confirmation notes
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       responses:
         '200':
           description: Reservation confirmed successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '400':
+          description: Reservation cannot be confirmed
+        '404':
+          description: Reservation not found
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/{id}/reject:
     post:
-      tags:
-        - Reservations
-      summary: Reject reservation
+      operationId: ReservationController_rejectReservation
+      summary: Reject a reservation
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
+      - name: id
         required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - reason
-              properties:
-                reason:
-                  type: string
-                  description: Reason for rejection
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       responses:
         '200':
           description: Reservation rejected successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '400':
+          description: Reservation cannot be rejected
+        '404':
+          description: Reservation not found
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reservations/{id}/cancel:
     post:
-      tags:
-        - Reservations
-      summary: Cancel reservation
+      operationId: ReservationController_cancelReservation
+      summary: Cancel a reservation
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - name: id
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - reason
-              properties:
-                reason:
-                  type: string
-                  description: Reason for cancellation
+              $ref: '#/components/schemas/CancelReservationDto'
       responses:
         '200':
           description: Reservation cancelled successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/Reservation'
-
+                $ref: '#/components/schemas/ReservationResponseDto'
+        '400':
+          description: Reservation cannot be cancelled
+        '404':
+          description: Reservation not found
+      tags:
+      - Reservations
+      security:
+      - bearer: []
   /reviews:
     get:
       tags:
-        - Reviews
-      summary: Get reviews
-      security: []
-      parameters:
-        - in: query
-          name: hotelId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Reviews retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-    post:
-      tags:
-        - Reviews
-      summary: Create a new review
-      responses:
-        '201':
-          description: Review created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /notifications/test:
-    post:
-      tags:
-        - Notifications
-      summary: Send test email
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - to
-              properties:
-                to:
-                  type: string
-                  format: email
-                  description: Email address to send test email
-                subject:
-                  type: string
-                  description: Optional subject for test email
-      responses:
-        '200':
-          description: Test email sent successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /notifications/send-email:
-    post:
-      tags:
-        - Notifications
-      summary: Send custom email
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - to
-                - subject
-                - text
-              properties:
-                to:
-                  type: string
-                  format: email
-                subject:
-                  type: string
-                text:
-                  type: string
-                html:
-                  type: string
-                  description: HTML content (optional)
-      responses:
-        '200':
-          description: Email sent successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /notifications/reservation-confirmation:
-    post:
-      tags:
-        - Notifications
-      summary: Send reservation confirmation email
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - to
-                - reservationData
-              properties:
-                to:
-                  type: string
-                  format: email
-                reservationData:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    hotelName:
-                      type: string
-                    checkIn:
-                      type: string
-                    checkOut:
-                      type: string
-                    guests:
-                      type: integer
-                    totalPrice:
-                      type: number
-      responses:
-        '200':
-          description: Confirmation email sent successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /payments/create:
-    post:
-      tags:
-        - Payments
-      summary: Create a new payment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - reservationId
-                - userId
-                - amount
-                - method
-                - cardNumber
-                - cardHolderName
-                - expiryMonth
-                - expiryYear
-                - cvv
-                - billingEmail
-              properties:
-                reservationId:
-                  type: string
-                  format: uuid
-                userId:
-                  type: string
-                amount:
-                  type: number
-                  minimum: 0
-                currency:
-                  type: string
-                  default: USD
-                method:
-                  type: string
-                  enum: [CREDIT_CARD, DEBIT_CARD, PAYPAL, BANK_TRANSFER]
-                description:
-                  type: string
-                cardNumber:
-                  type: string
-                cardHolderName:
-                  type: string
-                expiryMonth:
-                  type: string
-                expiryYear:
-                  type: string
-                cvv:
-                  type: string
-                billingEmail:
-                  type: string
-                  format: email
-      responses:
-        '201':
-          description: Payment created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /payments/process:
-    post:
-      tags:
-        - Payments
-      summary: Process a payment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - paymentId
-              properties:
-                paymentId:
-                  type: string
-                  format: uuid
-                paymentIntentId:
-                  type: string
-      responses:
-        '200':
-          description: Payment processing initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /payments/{id}:
-    get:
-      tags:
-        - Payments
-      summary: Get payment by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Payment retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /payments/refund:
-    post:
-      tags:
-        - Payments
-      summary: Refund a payment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - paymentId
-                - reason
-              properties:
-                paymentId:
-                  type: string
-                  format: uuid
-                amount:
-                  type: number
-                  minimum: 0
-                  description: Partial refund amount (optional)
-                reason:
-                  type: string
-      responses:
-        '200':
-          description: Payment refunded successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /reviews:
-    get:
-      tags:
-        - Reviews
+      - Reviews
       summary: Get reviews with filters
       security: []
       parameters:
-        - in: query
-          name: hotelId
-          schema:
-            type: string
-            format: uuid
-        - in: query
-          name: userId
-          schema:
-            type: string
-        - in: query
-          name: minRating
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 5
-        - in: query
-          name: maxRating
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 5
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
+      - in: query
+        name: hotelId
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: userId
+        schema:
+          type: string
+      - in: query
+        name: minRating
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 5
+      - in: query
+        name: maxRating
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 5
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
       responses:
         '200':
           description: Reviews retrieved successfully
@@ -1863,10 +1943,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     post:
       tags:
-        - Reviews
+      - Reviews
       summary: Create a new review
       requestBody:
         required: true
@@ -1875,12 +1954,12 @@ paths:
             schema:
               type: object
               required:
-                - reservationId
-                - userId
-                - hotelId
-                - rating
-                - title
-                - comment
+              - reservationId
+              - userId
+              - hotelId
+              - rating
+              - title
+              - comment
               properties:
                 reservationId:
                   type: string
@@ -1925,20 +2004,259 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
+  /notifications/test:
+    post:
+      tags:
+      - Notifications
+      summary: Send test email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - to
+              properties:
+                to:
+                  type: string
+                  format: email
+                  description: Email address to send test email
+                subject:
+                  type: string
+                  description: Optional subject for test email
+      responses:
+        '200':
+          description: Test email sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /notifications/send-email:
+    post:
+      tags:
+      - Notifications
+      summary: Send custom email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - to
+              - subject
+              - text
+              properties:
+                to:
+                  type: string
+                  format: email
+                subject:
+                  type: string
+                text:
+                  type: string
+                html:
+                  type: string
+                  description: HTML content (optional)
+      responses:
+        '200':
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /notifications/reservation-confirmation:
+    post:
+      tags:
+      - Notifications
+      summary: Send reservation confirmation email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - to
+              - reservationData
+              properties:
+                to:
+                  type: string
+                  format: email
+                reservationData:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    hotelName:
+                      type: string
+                    checkIn:
+                      type: string
+                    checkOut:
+                      type: string
+                    guests:
+                      type: integer
+                    totalPrice:
+                      type: number
+      responses:
+        '200':
+          description: Confirmation email sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/create:
+    post:
+      tags:
+      - Payments
+      summary: Create a new payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reservationId
+              - userId
+              - amount
+              - method
+              - cardNumber
+              - cardHolderName
+              - expiryMonth
+              - expiryYear
+              - cvv
+              - billingEmail
+              properties:
+                reservationId:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                amount:
+                  type: number
+                  minimum: 0
+                currency:
+                  type: string
+                  default: USD
+                method:
+                  type: string
+                  enum:
+                  - CREDIT_CARD
+                  - DEBIT_CARD
+                  - PAYPAL
+                  - BANK_TRANSFER
+                description:
+                  type: string
+                cardNumber:
+                  type: string
+                cardHolderName:
+                  type: string
+                expiryMonth:
+                  type: string
+                expiryYear:
+                  type: string
+                cvv:
+                  type: string
+                billingEmail:
+                  type: string
+                  format: email
+      responses:
+        '201':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/process:
+    post:
+      tags:
+      - Payments
+      summary: Process a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - paymentId
+              properties:
+                paymentId:
+                  type: string
+                  format: uuid
+                paymentIntentId:
+                  type: string
+      responses:
+        '200':
+          description: Payment processing initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/{id}:
+    get:
+      tags:
+      - Payments
+      summary: Get payment by ID
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Payment retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/refund:
+    post:
+      tags:
+      - Payments
+      summary: Refund a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - paymentId
+              - reason
+              properties:
+                paymentId:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 0
+                  description: Partial refund amount (optional)
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Payment refunded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /reviews/{id}:
     get:
       tags:
-        - Reviews
+      - Reviews
       summary: Get review by ID
       security: []
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Review retrieved successfully
@@ -1946,18 +2264,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     put:
       tags:
-        - Reviews
+      - Reviews
       summary: Update review
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         required: true
         content:
@@ -1996,18 +2313,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
     delete:
       tags:
-        - Reviews
+      - Reviews
       summary: Delete review
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Review deleted successfully
@@ -2015,20 +2331,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /reviews/hotel/{hotelId}/stats:
     get:
       tags:
-        - Reviews
+      - Reviews
       summary: Get hotel review statistics
       security: []
       parameters:
-        - in: path
-          name: hotelId
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - in: path
+        name: hotelId
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Hotel statistics retrieved successfully
@@ -2036,29 +2351,33 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          totalReviews:
-                            type: integer
-                          averageRating:
-                            type: number
-                          ratingDistribution:
-                            type: object
-                            properties:
-                              "5": { type: integer }
-                              "4": { type: integer }
-                              "3": { type: integer }
-                              "2": { type: integer }
-                              "1": { type: integer }
-
+                - $ref: '#/components/schemas/ApiResponse'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        totalReviews:
+                          type: integer
+                        averageRating:
+                          type: number
+                        ratingDistribution:
+                          type: object
+                          properties:
+                            '5':
+                              type: integer
+                            '4':
+                              type: integer
+                            '3':
+                              type: integer
+                            '2':
+                              type: integer
+                            '1':
+                              type: integer
   /reports/generate:
     post:
       tags:
-        - Reports
+      - Reports
       summary: Generate a new report
       requestBody:
         required: true
@@ -2067,17 +2386,28 @@ paths:
             schema:
               type: object
               required:
-                - type
-                - period
-                - startDate
-                - endDate
+              - type
+              - period
+              - startDate
+              - endDate
               properties:
                 type:
                   type: string
-                  enum: [RESERVATIONS, REVENUE, OCCUPANCY, CUSTOMER, HOTEL_PERFORMANCE, PAYMENT]
+                  enum:
+                  - RESERVATIONS
+                  - REVENUE
+                  - OCCUPANCY
+                  - CUSTOMER
+                  - HOTEL_PERFORMANCE
+                  - PAYMENT
                 period:
                   type: string
-                  enum: [DAILY, WEEKLY, MONTHLY, YEARLY, CUSTOM]
+                  enum:
+                  - DAILY
+                  - WEEKLY
+                  - MONTHLY
+                  - YEARLY
+                  - CUSTOM
                 startDate:
                   type: string
                   format: date
@@ -2091,7 +2421,10 @@ paths:
                   type: string
                 format:
                   type: string
-                  enum: [JSON, CSV, PDF]
+                  enum:
+                  - JSON
+                  - CSV
+                  - PDF
                   default: JSON
       responses:
         '201':
@@ -2100,575 +2433,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
-  /reports:
-    get:
-      tags:
-        - Reports
-      summary: Get all reports
-      responses:
-        '200':
-          description: Reports retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /reports/{id}:
-    get:
-      tags:
-        - Reports
-      summary: Get report by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Report retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-    delete:
-      tags:
-        - Reports
-      summary: Delete report
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Report deleted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /reports/types/available:
-    get:
-      tags:
-        - Reports
-      summary: Get available report types
-      responses:
-        '200':
-          description: Available report types retrieved
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          types:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                key:
-                                  type: string
-                                name:
-                                  type: string
-                                description:
-                                  type: string
-
-  /search/hotels:
-    get:
-      tags:
-        - Search
-      summary: Search hotels with filters
-      security: []
-      parameters:
-        - in: query
-          name: city
-          schema:
-            type: string
-        - in: query
-          name: country
-          schema:
-            type: string
-        - in: query
-          name: minPrice
-          schema:
-            type: number
-        - in: query
-          name: maxPrice
-          schema:
-            type: number
-        - in: query
-          name: rating
-          schema:
-            type: number
-            minimum: 0
-            maximum: 5
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Hotels search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-    post:
-      tags:
-        - Search
-      summary: Advanced hotel search
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                checkIn:
-                  type: string
-                  format: date
-                checkOut:
-                  type: string
-                  format: date
-                guests:
-                  type: integer
-                  minimum: 1
-                city:
-                  type: string
-                country:
-                  type: string
-                minPrice:
-                  type: number
-                maxPrice:
-                  type: number
-                amenities:
-                  type: array
-                  items:
-                    type: string
-                rating:
-                  type: number
-                  minimum: 0
-                  maximum: 5
-      responses:
-        '200':
-          description: Advanced search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /search/rooms:
-    get:
-      tags:
-        - Search
-      summary: Search rooms in a hotel
-      security: []
-      parameters:
-        - in: query
-          name: hotelId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: checkIn
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: checkOut
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: guests
-          schema:
-            type: integer
-            minimum: 1
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Room search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-    post:
-      tags:
-        - Search
-      summary: Advanced room search
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                hotelId:
-                  type: string
-                checkIn:
-                  type: string
-                  format: date
-                checkOut:
-                  type: string
-                  format: date
-                guests:
-                  type: integer
-                  minimum: 1
-                roomType:
-                  type: string
-                minPrice:
-                  type: number
-                maxPrice:
-                  type: number
-                amenities:
-                  type: array
-                  items:
-                    type: string
-      responses:
-        '200':
-          description: Advanced room search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /search/suggestions:
-    get:
-      tags:
-        - Search
-      summary: Get search suggestions
-      security: []
-      parameters:
-        - in: query
-          name: query
-          required: true
-          schema:
-            type: string
-          description: Search query text
-        - in: query
-          name: type
-          schema:
-            type: string
-            enum: [hotels, cities, countries]
-          description: Type of suggestions
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 5
-            maximum: 20
-      responses:
-        '200':
-          description: Search suggestions
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            name:
-                              type: string
-                            type:
-                              type: string
-                            description:
-                              type: string
-
-  /availability:
-    post:
-      tags:
-        - Availability
-      summary: Create room availability
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - roomId
-                - date
-                - availableRooms
-              properties:
-                roomId:
-                  type: string
-                date:
-                  type: string
-                  format: date
-                availableRooms:
-                  type: integer
-                  minimum: 0
-                status:
-                  type: string
-                  enum: [AVAILABLE, UNAVAILABLE, MAINTENANCE]
-                  default: AVAILABLE
-      responses:
-        '201':
-          description: Availability created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /availability/room/{roomId}:
-    get:
-      tags:
-        - Availability
-      summary: Get room availability by date range
-      security: []
-      parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: startDate
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: endDate
-          schema:
-            type: string
-            format: date
-      responses:
-        '200':
-          description: Room availability retrieved successfully
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            availabilityId:
-                              type: string
-                            roomId:
-                              type: string
-                            date:
-                              type: string
-                              format: date
-                            availableRooms:
-                              type: integer
-                            status:
-                              type: string
-                              enum: [AVAILABLE, UNAVAILABLE, MAINTENANCE]
-
-  /availability/check:
-    post:
-      tags:
-        - Availability
-      summary: Check availability for reservation
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - roomId
-                - checkInDate
-                - checkOutDate
-                - requiredRooms
-              properties:
-                roomId:
-                  type: string
-                checkInDate:
-                  type: string
-                  format: date
-                checkOutDate:
-                  type: string
-                  format: date
-                requiredRooms:
-                  type: integer
-                  minimum: 1
-      responses:
-        '200':
-          description: Availability check result
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ApiResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          available:
-                            type: boolean
-                          roomId:
-                            type: string
-                          checkInDate:
-                            type: string
-                            format: date
-                          checkOutDate:
-                            type: string
-                            format: date
-                          requiredRooms:
-                            type: integer
-                          availableRooms:
-                            type: integer
-
-  /availability/{availabilityId}:
-    put:
-      tags:
-        - Availability
-      summary: Update room availability
-      parameters:
-        - in: path
-          name: availabilityId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                availableRooms:
-                  type: integer
-                  minimum: 0
-                status:
-                  type: string
-                  enum: [AVAILABLE, UNAVAILABLE, MAINTENANCE]
-      responses:
-        '200':
-          description: Availability updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-    delete:
-      tags:
-        - Availability
-      summary: Delete availability record
-      parameters:
-        - in: path
-          name: availabilityId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Availability deleted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /availability/reduce/{roomId}/{date}:
-    post:
-      tags:
-        - Availability
-      summary: Reduce available rooms for a specific date
-      parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: date
-          required: true
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: quantity
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '200':
-          description: Available rooms reduced successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
-  /availability/restore/{roomId}/{date}:
-    post:
-      tags:
-        - Availability
-      summary: Restore available rooms for a specific date
-      parameters:
-        - in: path
-          name: roomId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: date
-          required: true
-          schema:
-            type: string
-            format: date
-        - in: query
-          name: quantity
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '200':
-          description: Available rooms restored successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-
   /reports:
     post:
       tags:
-        - Reports
+      - Reports
       summary: Generate report
       responses:
         '201':
@@ -2677,27 +2445,806 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
+  /reports/{id}:
+    get:
+      tags:
+      - Reports
+      summary: Get report by ID
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Report retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+      - Reports
+      summary: Delete report
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Report deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /reports/types/available:
+    get:
+      tags:
+      - Reports
+      summary: Get available report types
+      responses:
+        '200':
+          description: Available report types retrieved
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApiResponse'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        types:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                type: string
+                              description:
+                                type: string
+  /search/hotels:
+    get:
+      operationId: SearchController_searchHotels
+      summary: Search hotels with filters
+      parameters: []
+      responses:
+        '200':
+          description: Hotels retrieved successfully
+        '400':
+          description: Bad request
+      tags:
+      - Search
+    post:
+      operationId: SearchController_advancedHotelSearch
+      summary: Advanced hotel search with complex filters
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelSearchDto'
+      responses:
+        '200':
+          description: Hotels retrieved successfully
+        '400':
+          description: Bad request
+      tags:
+      - Search
+  /search/rooms:
+    get:
+      operationId: SearchController_searchRooms
+      summary: Search rooms within a hotel
+      parameters:
+      - name: hotelId
+        required: true
+        in: query
+        description: Hotel ID
+        schema: {}
+      responses:
+        '200':
+          description: Rooms retrieved successfully
+        '400':
+          description: Bad request
+      tags:
+      - Search
+    post:
+      operationId: SearchController_advancedRoomSearch
+      summary: Advanced room search with complex filters
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomSearchDto'
+      responses:
+        '200':
+          description: Rooms retrieved successfully
+        '400':
+          description: Bad request
+      tags:
+      - Search
+  /search/suggestions:
+    get:
+      operationId: SearchController_getSearchSuggestions
+      summary: Get search suggestions
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Maximum number of suggestions
+        schema: {}
+      - name: type
+        required: false
+        in: query
+        description: Suggestion type
+        schema:
+          enum:
+          - hotels
+          - cities
+          - locations
+          type: string
+      - name: query
+        required: true
+        in: query
+        description: Search query
+        schema: {}
+      responses:
+        '200':
+          description: Suggestions retrieved successfully
+      tags:
+      - Search
+  /availability:
+    post:
+      operationId: AvailabilityController_createAvailability
+      summary: Create room availability
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAvailabilityDto'
+      responses:
+        '201':
+          description: Availability created successfully
+        '400':
+          description: Bad request
+      tags:
+      - Availability
+  /availability/room/{roomId}:
+    get:
+      operationId: AvailabilityController_getAvailabilityByRoom
+      summary: Get availability by room and date range
+      parameters:
+      - name: roomId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: startDate
+        required: true
+        in: query
+        description: Start date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: endDate
+        required: true
+        in: query
+        description: End date (YYYY-MM-DD)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Availability retrieved successfully
+      tags:
+      - Availability
+  /availability/check:
+    post:
+      operationId: AvailabilityController_checkAvailability
+      summary: Check room availability for booking
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckAvailabilityDto'
+      responses:
+        '200':
+          description: Availability checked successfully
+        '400':
+          description: Bad request
+      tags:
+      - Availability
+  /availability/{availabilityId}:
+    put:
+      operationId: AvailabilityController_updateAvailability
+      summary: Update room availability
+      parameters:
+      - name: availabilityId
+        required: true
+        in: path
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAvailabilityDto'
+      responses:
+        '200':
+          description: Availability updated successfully
+        '404':
+          description: Availability not found
+      tags:
+      - Availability
+    delete:
+      operationId: AvailabilityController_deleteAvailability
+      summary: Delete room availability
+      parameters:
+      - name: availabilityId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Availability deleted successfully
+        '404':
+          description: Availability not found
+      tags:
+      - Availability
+  /availability/reduce/{roomId}/{date}:
+    post:
+      operationId: AvailabilityController_reduceAvailability
+      summary: Reduce available rooms (for booking)
+      parameters:
+      - name: roomId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: date
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: quantity
+        required: false
+        in: query
+        description: 'Number of rooms to reduce (default: 1)'
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Availability reduced successfully
+        '404':
+          description: Availability not found
+      tags:
+      - Availability
+  /availability/restore/{roomId}/{date}:
+    post:
+      operationId: AvailabilityController_restoreAvailability
+      summary: Restore available rooms (for cancellation)
+      parameters:
+      - name: roomId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: date
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: quantity
+        required: false
+        in: query
+        description: 'Number of rooms to restore (default: 1)'
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Availability restored successfully
+        '404':
+          description: Availability not found
+      tags:
+      - Availability
+  /users:
+    get:
+      operationId: UsersController_findAll
+      summary: Get all users (admin only)
+      parameters:
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      - name: role
+        required: false
+        in: query
+        schema:
+          enum:
+          - CUSTOMER
+          - HOTEL_ADMIN
+          - SYSTEM_ADMIN
+          type: string
+      - name: limit
+        required: false
+        in: query
+        schema:
+          type: number
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Users retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /users/{id}:
+    get:
+      operationId: UsersController_findOne
+      summary: Get user by ID
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: x-user-id
+        required: true
+        in: header
+        schema:
+          type: string
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+    patch:
+      operationId: UsersController_update
+      summary: Update user by ID (admin only)
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: User updated successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+    delete:
+      operationId: UsersController_remove
+      summary: Delete user by ID (admin only)
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User deleted successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /users/{id}/reservations:
+    get:
+      operationId: UsersController_getUserReservations
+      summary: Get user reservations
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: x-user-id
+        required: true
+        in: header
+        schema:
+          type: string
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User reservations retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /users/hotel-owners:
+    get:
+      operationId: UsersController_getHotelOwners
+      summary: Get all hotel owners (admin only)
+      parameters:
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Hotel owners retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /users/customers:
+    get:
+      operationId: UsersController_getCustomers
+      summary: Get all customers (admin only)
+      parameters:
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Customers retrieved successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /users/{id}/status:
+    patch:
+      operationId: UsersController_updateUserStatus
+      summary: Update user status (admin only)
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: x-user-role
+        required: true
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User status updated successfully
+      tags:
+      - Users
+      security:
+      - bearer: []
+  /health:
+    get:
+      operationId: SearchController_getHealth
+      summary: Health check endpoint
+      parameters: []
+      responses:
+        '200':
+          description: Service is healthy
+      tags:
+      - Search
+  /:
+    get:
+      operationId: PaymentController_getAllPayments
+      summary: Get all payments
+      parameters: []
+      responses:
+        '200':
+          description: All payments retrieved successfully
+      tags:
+      - Payments
+  /search:
+    get:
+      operationId: ReviewController_getReviews
+      summary: Get reviews with filters
+      parameters: []
+      responses:
+        '200':
+          description: Reviews retrieved successfully
+      tags:
+      - Reviews
+  /hotel/{hotelId}/stats:
+    get:
+      operationId: ReviewController_getHotelStats
+      summary: Get hotel review statistics
+      parameters:
+      - name: hotelId
+        required: true
+        in: path
+        description: Hotel ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Hotel statistics retrieved successfully
+      tags:
+      - Reviews
+  /{id}:
+    get:
+      operationId: PaymentController_getPayment
+      summary: Get payment by ID
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Payment ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payment retrieved successfully
+        '404':
+          description: Payment not found
+      tags:
+      - Payments
+  /{id}/helpful:
+    post:
+      operationId: ReviewController_markHelpful
+      summary: Mark review as helpful
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Review ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Review marked as helpful
+        '404':
+          description: Review not found
+      tags:
+      - Reviews
+  /test:
+    post:
+      operationId: NotificationController_sendTestEmail
+      summary: Send test email
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendTestEmailDto'
+      responses:
+        '200':
+          description: Test email sent successfully
+        '400':
+          description: Bad request
+      tags:
+      - Notifications
+  /send-email:
+    post:
+      operationId: NotificationController_sendEmail
+      summary: Send custom email
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailDto'
+      responses:
+        '200':
+          description: Email sent successfully
+        '400':
+          description: Bad request
+      tags:
+      - Notifications
+  /reservation-confirmation:
+    post:
+      operationId: NotificationController_sendReservationConfirmation
+      summary: Send reservation confirmation email
+      parameters: []
+      responses:
+        '200':
+          description: Confirmation email sent successfully
+      tags:
+      - Notifications
+  /reservation-cancellation:
+    post:
+      operationId: NotificationController_sendReservationCancellation
+      summary: Send reservation cancellation email
+      parameters: []
+      responses:
+        '200':
+          description: Cancellation email sent successfully
+      tags:
+      - Notifications
+  /generate:
+    post:
+      operationId: ReportController_generateReport
+      summary: Generate a new report
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateReportDto'
+      responses:
+        '201':
+          description: Report generation started
+        '400':
+          description: Bad request
+      tags:
+      - Reports
+  /{id}/download:
+    get:
+      operationId: ReportController_downloadReport
+      summary: Download report file
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Report ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Report file download
+        '404':
+          description: Report not found
+      tags:
+      - Reports
+  /types/available:
+    get:
+      operationId: ReportController_getAvailableReportTypes
+      summary: Get available report types
+      parameters: []
+      responses:
+        '200':
+          description: Available report types
+      tags:
+      - Reports
+  /create:
+    post:
+      operationId: PaymentController_createPayment
+      summary: Create a new payment
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentDto'
+      responses:
+        '201':
+          description: Payment created successfully
+        '400':
+          description: Bad request
+      tags:
+      - Payments
+  /process:
+    post:
+      operationId: PaymentController_processPayment
+      summary: Process a payment
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessPaymentDto'
+      responses:
+        '200':
+          description: Payment processing initiated
+        '400':
+          description: Bad request
+        '404':
+          description: Payment not found
+      tags:
+      - Payments
+  /refund:
+    post:
+      operationId: PaymentController_refundPayment
+      summary: Refund a payment
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundPaymentDto'
+      responses:
+        '200':
+          description: Payment refunded successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Payment not found
+      tags:
+      - Payments
+  /create-intent:
+    post:
+      operationId: PaymentController_createPaymentIntent
+      summary: Create payment intent
+      parameters: []
+      responses:
+        '201':
+          description: Payment intent created successfully
+      tags:
+      - Payments
+  /reservation/{reservationId}:
+    get:
+      operationId: PaymentController_getPaymentsByReservation
+      summary: Get payments by reservation ID
+      parameters:
+      - name: reservationId
+        required: true
+        in: path
+        description: Reservation ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payments retrieved successfully
+      tags:
+      - Payments
 tags:
-  - name: Authentication
-    description: User authentication and authorization
-  - name: Users
-    description: User management operations  
-  - name: Hotels
-    description: Hotel operations
-  - name: Rooms
-    description: Room management operations
-  - name: Search
-    description: Hotel and room search functionality
-  - name: Availability
-    description: Room availability management
-  - name: Reservations
-    description: Reservation management
-  - name: Reviews
-    description: Review system
-  - name: Notifications
-    description: User notifications
-  - name: Payments
-    description: Payment processing
-  - name: Reports
-    description: Analytics and reporting
+- name: Authentication
+  description: User authentication and authorization
+- name: Users
+  description: User management operations
+- name: Hotels
+  description: Hotel operations
+- name: Rooms
+  description: Room management operations
+- name: Search
+  description: Hotel and room search functionality
+- name: Availability
+  description: Room availability management
+- name: Reservations
+  description: Reservation management
+- name: Reviews
+  description: Review system
+- name: Notifications
+  description: User notifications
+- name: Payments
+  description: Payment processing
+- name: Reports
+  description: Analytics and reporting
+

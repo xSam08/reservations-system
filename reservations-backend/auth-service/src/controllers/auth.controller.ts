@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseGuards, Request, Get, Put } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Put, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse as SwaggerApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from '../services/auth.service';
-import { LoginDto, CreateUserDto, UpdateUserDto, RefreshTokenDto, ForgotPasswordDto, ResetPasswordDto } from '../dto';
+import { LoginDto, CreateUserDto, UpdateUserDto, RefreshTokenDto, ForgotPasswordDto, ResetPasswordDto, VerifyEmailDto, ResendVerificationDto } from '../dto';
 import { ApiResponse } from '../common/types';
 import { ResponseUtil } from '../common/response.util';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
@@ -131,5 +131,69 @@ export class AuthController {
   @SwaggerApiResponse({ status: 401, description: 'Invalid token' })
   async validateToken(@Request() req: any) {
     return ResponseUtil.success(req.user, 'Token is valid');
+  }
+
+  @Get('verify-email')
+  @ApiOperation({ summary: 'Verify email address via GET link' })
+  @SwaggerApiResponse({ status: 200, description: 'Email verified successfully' })
+  @SwaggerApiResponse({ status: 401, description: 'Invalid or expired verification token' })
+  async verifyEmailGet(@Query('token') token: string) {
+    try {
+      if (!token) {
+        return ResponseUtil.error('Verification token is required');
+      }
+      const result = await this.authService.verifyEmail({ token });
+      return `
+        <html>
+          <head><title>Email Verified</title></head>
+          <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+            <h1 style="color: #28a745;">✅ Email Verified Successfully!</h1>
+            <p>Your email has been verified. You can now close this window and return to the application.</p>
+            <script>
+              setTimeout(() => {
+                window.close();
+              }, 3000);
+            </script>
+          </body>
+        </html>
+      `;
+    } catch (error: any) {
+      return `
+        <html>
+          <head><title>Verification Failed</title></head>
+          <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+            <h1 style="color: #dc3545;">❌ Verification Failed</h1>
+            <p>The verification link is invalid or has expired.</p>
+            <p>Please request a new verification email.</p>
+          </body>
+        </html>
+      `;
+    }
+  }
+
+  @Post('verify-email')
+  @ApiOperation({ summary: 'Verify email address via POST' })
+  @SwaggerApiResponse({ status: 200, description: 'Email verified successfully' })
+  @SwaggerApiResponse({ status: 401, description: 'Invalid or expired verification token' })
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    try {
+      const result = await this.authService.verifyEmail(verifyEmailDto);
+      return ResponseUtil.success(result, 'Email verified successfully');
+    } catch (error: any) {
+      return ResponseUtil.error(error.message);
+    }
+  }
+
+  @Post('resend-verification')
+  @ApiOperation({ summary: 'Resend email verification' })
+  @SwaggerApiResponse({ status: 200, description: 'Verification email sent' })
+  @SwaggerApiResponse({ status: 400, description: 'Bad request' })
+  async resendVerification(@Body() resendVerificationDto: ResendVerificationDto) {
+    try {
+      const result = await this.authService.resendVerification(resendVerificationDto);
+      return ResponseUtil.success(result, 'Verification email sent');
+    } catch (error: any) {
+      return ResponseUtil.error(error.message);
+    }
   }
 }

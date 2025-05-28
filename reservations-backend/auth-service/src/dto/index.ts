@@ -52,6 +52,7 @@ export class UserResponseDto {
   name!: string;
   phoneNumber?: string;
   role!: UserRole;
+  emailVerified!: boolean;
   createdAt!: Date;
   updatedAt!: Date;
 }
@@ -82,4 +83,16 @@ export class AuthTokenResponseDto {
   accessToken!: string;
   refreshToken!: string;
   expiresIn!: number;
+}
+
+export class VerifyEmailDto {
+  @IsString()
+  @IsNotEmpty()
+  token!: string;
+}
+
+export class ResendVerificationDto {
+  @IsEmail()
+  @IsNotEmpty()
+  email!: string;
 }

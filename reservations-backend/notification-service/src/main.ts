@@ -28,10 +28,21 @@ async function bootstrap() {
     .setDescription('Notification service for hotel reservation system')
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('notifications', 'Notification management endpoints')
+    .addTag('emails', 'Email sending endpoints')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      docExpansion: 'list',
+      filter: true,
+      showRequestHeaders: true,
+      tryItOutEnabled: true,
+    },
+  });
 
   const port = process.env.PORT || 3006;
   await app.listen(port);

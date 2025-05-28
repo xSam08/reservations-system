@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { NotificationService } from '../services/notification.service';
-import { SendEmailDto, SendTestEmailDto } from '../dto';
+import { SendEmailDto, SendTestEmailDto, ReservationConfirmationDto, ReservationCancellationDto, EmailVerificationDto } from '../dto';
 import { ApiResponse as CustomApiResponse } from '../common/types';
 
 @ApiTags('Notifications')
@@ -26,6 +26,7 @@ export class NotificationController {
 
   @Post('test')
   @ApiOperation({ summary: 'Send test email' })
+  @ApiBody({ type: SendTestEmailDto })
   @ApiResponse({ status: 200, description: 'Test email sent successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async sendTestEmail(@Body() dto: SendTestEmailDto): Promise<CustomApiResponse<any>> {
@@ -34,6 +35,7 @@ export class NotificationController {
 
   @Post('send-email')
   @ApiOperation({ summary: 'Send custom email' })
+  @ApiBody({ type: SendEmailDto })
   @ApiResponse({ status: 200, description: 'Email sent successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async sendEmail(@Body() dto: SendEmailDto): Promise<CustomApiResponse<any>> {
@@ -42,25 +44,48 @@ export class NotificationController {
 
   @Post('reservation-confirmation')
   @ApiOperation({ summary: 'Send reservation confirmation email' })
+  @ApiBody({ type: ReservationConfirmationDto })
   @ApiResponse({ status: 200, description: 'Confirmation email sent successfully' })
   async sendReservationConfirmation(
-    @Body() body: { to: string; reservationData: any },
+    @Body() dto: ReservationConfirmationDto,
   ): Promise<CustomApiResponse<any>> {
     return await this.notificationService.sendReservationConfirmation(
-      body.to,
-      body.reservationData,
+      dto.to,
+      {
+        id: dto.reservationId,
+        hotelName: dto.hotelName,
+        checkIn: dto.checkIn,
+        checkOut: dto.checkOut,
+        guests: dto.guests,
+        totalPrice: dto.totalPrice,
+      },
     );
   }
 
   @Post('reservation-cancellation')
   @ApiOperation({ summary: 'Send reservation cancellation email' })
+  @ApiBody({ type: ReservationCancellationDto })
   @ApiResponse({ status: 200, description: 'Cancellation email sent successfully' })
   async sendReservationCancellation(
-    @Body() body: { to: string; reservationData: any },
+    @Body() dto: ReservationCancellationDto,
   ): Promise<CustomApiResponse<any>> {
     return await this.notificationService.sendReservationCancellation(
-      body.to,
-      body.reservationData,
+      dto.to,
+      {
+        id: dto.reservationId,
+        hotelName: dto.hotelName,
+        reason: dto.reason,
+      },
     );
+  }
+
+  @Post('email-verification')
+  @ApiOperation({ summary: 'Send email verification email' })
+  @ApiBody({ type: EmailVerificationDto })
+  @ApiResponse({ status: 200, description: 'Verification email sent successfully' })
+  async sendEmailVerification(
+    @Body() dto: EmailVerificationDto,
+  ): Promise<CustomApiResponse<any>> {
+    return await this.notificationService.sendEmailVerification(dto);
   }
 }

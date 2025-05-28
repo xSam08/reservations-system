@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
-import { SendEmailDto, SendTestEmailDto } from '../dto';
+import { SendEmailDto, SendTestEmailDto, EmailVerificationDto } from '../dto';
 import { ApiResponse } from '../common/types';
 
 @Injectable()
@@ -174,6 +174,60 @@ export class NotificationService {
       return {
         success: false,
         message: 'Failed to send reservation cancellation email',
+        errors: [error instanceof Error ? error.message : 'Unknown error'],
+      };
+    }
+  }
+
+  async sendEmailVerification(dto: EmailVerificationDto): Promise<ApiResponse<any>> {
+    try {
+      const subject = 'Verificación de Correo Electrónico - Hotel Reservation System';
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #2c3e50; text-align: center;">🏨 Verificación de Correo Electrónico</h2>
+          
+          <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px; margin: 20px 0; text-align: center;">
+            <h3 style="color: #495057; margin-top: 0;">¡Bienvenido al Sistema de Reservas de Hoteles!</h3>
+            <p style="font-size: 16px; line-height: 1.6;">
+              Para completar tu registro y activar tu cuenta, necesitamos verificar tu dirección de correo electrónico.
+            </p>
+            
+            <div style="margin: 30px 0;">
+              <a href="${dto.verificationUrl}" 
+                 style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                ✅ Verificar Correo Electrónico
+              </a>
+            </div>
+            
+            <p style="color: #6c757d; font-size: 14px;">
+              Si el botón no funciona, puedes copiar y pegar el siguiente enlace en tu navegador:
+            </p>
+            <p style="word-break: break-all; color: #007bff; font-size: 12px;">
+              ${dto.verificationUrl}
+            </p>
+          </div>
+          
+          <div style="border-top: 1px solid #e9ecef; padding-top: 20px; margin-top: 30px; text-align: center; color: #6c757d; font-size: 12px;">
+            <p><strong>Importante:</strong> Este enlace de verificación expirará en 24 horas.</p>
+            <p>Si no solicitaste esta verificación, puedes ignorar este correo.</p>
+            <p style="margin-top: 20px;">
+              © 2025 Hotel Reservation System - Este es un correo automático, por favor no respondas.
+            </p>
+          </div>
+        </div>
+      `;
+
+      return await this.sendEmail({
+        to: dto.to,
+        subject,
+        text: `Verificación de correo electrónico - Visita: ${dto.verificationUrl}`,
+        html,
+      });
+    } catch (error) {
+      this.logger.error('Failed to send email verification:', error);
+      return {
+        success: false,
+        message: 'Failed to send email verification',
         errors: [error instanceof Error ? error.message : 'Unknown error'],
       };
     }

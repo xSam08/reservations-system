@@ -1,11 +1,12 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, HttpService } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../entities/user.entity';
-import { CreateUserDto, UserResponseDto, UpdateUserDto, RefreshTokenDto, ForgotPasswordDto, ResetPasswordDto } from '../dto';
+import { CreateUserDto, UserResponseDto, UpdateUserDto, RefreshTokenDto, ForgotPasswordDto, ResetPasswordDto, VerifyEmailDto, ResendVerificationDto } from '../dto';
 import { JwtPayload } from '../common/types';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<{ user: UserResponseDto; token: string }> {
@@ -26,15 +28,23 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
+    const emailVerificationToken = uuidv4();
+    const emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
     
     const user = this.userRepository.create({
       user_id: uuidv4(),
       ...createUserDto,
       password: hashedPassword,
+      email_verification_token: emailVerificationToken,
+      email_verification_expires: emailVerificationExpires,
+      email_verified: false,
     });
 
     const savedUser = await this.userRepository.save(user);
     const token = await this.generateToken(savedUser);
+
+    // Send verification email
+    await this.sendVerificationEmail(savedUser.email, emailVerificationToken);
 
     return {
       user: this.mapToUserResponse(savedUser),
@@ -176,6 +186,93 @@ export class AuthService {
     }
   }
 
+  async verifyEmail(verifyEmailDto: VerifyEmailDto): Promise<{ message: string }> {
+    const user = await this.userRepository.findOne({
+      where: { 
+        email_verification_token: verifyEmailDto.token,
+      }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid verification token');
+    }
+
+    if (!user.email_verification_expires || user.email_verification_expires < new Date()) {
+      throw new UnauthorizedException('Verification token has expired');
+    }
+
+    await this.userRepository.update(
+      { user_id: user.user_id },
+      { 
+        email_verified: true,
+        email_verification_token: null,
+        email_verification_expires: null,
+        updated_at: new Date()
+      }
+    );
+
+    return { message: 'Email verified successfully' };
+  }
+
+  async resendVerification(resendVerificationDto: ResendVerificationDto): Promise<{ message: string }> {
+    const user = await this.userRepository.findOne({
+      where: { email: resendVerificationDto.email }
+    });
+
+    if (!user) {
+      return { message: 'If the email exists, a verification link has been sent' };
+    }
+
+    if (user.email_verified) {
+      return { message: 'Email is already verified' };
+    }
+
+    const emailVerificationToken = uuidv4();
+    const emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+    await this.userRepository.update(
+      { user_id: user.user_id },
+      {
+        email_verification_token: emailVerificationToken,
+        email_verification_expires: emailVerificationExpires,
+        updated_at: new Date()
+      }
+    );
+
+    await this.sendVerificationEmail(user.email, emailVerificationToken);
+
+    return { message: 'Verification email sent successfully' };
+  }
+
+  private async sendVerificationEmail(email: string, token: string): Promise<void> {
+    try {
+      const notificationServiceUrl = this.configService.get('NOTIFICATION_SERVICE_URL') || 'http://localhost:3006';
+      const authServiceUrl = this.configService.get('AUTH_SERVICE_URL') || 'http://localhost:3001';
+      const verificationUrl = `${authServiceUrl}/auth/verify-email?token=${token}`;
+
+      const emailData = {
+        to: email,
+        verificationUrl: verificationUrl,
+        token: token
+      };
+
+      // Call notification service to send email
+      const response = await fetch(`${notificationServiceUrl}/email-verification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to send verification email:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+    }
+  }
+
   private mapToUserResponse(user: User): UserResponseDto {
     return {
       userId: user.user_id,
@@ -183,6 +280,7 @@ export class AuthService {
       name: user.name,
       phoneNumber: user.phone_number,
       role: user.role,
+      emailVerified: user.email_verified,
       createdAt: user.created_at,
       updatedAt: user.updated_at
     };
