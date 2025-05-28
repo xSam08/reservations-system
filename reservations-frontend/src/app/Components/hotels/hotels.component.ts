@@ -1,26 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HotelsServiceService, Hotel, HotelsResponse } from '../../Services/hotels-service/hotels-service.service';
+
+// Interfaz extendida para compatibilidad con el template
+interface HotelDisplay extends Hotel {
+  imageUrl?: string;
+  price?: number;
+  location?: string;
+}
 import { ReviewsServiceService, ReviewStats } from '../../Services/reviews-service/reviews-service.service';
 
 @Component({
   selector: 'app-hotels',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './hotels.component.html',
   styleUrl: './hotels.component.css'
 })
 export class HotelsComponent implements OnInit {
-  hotels: Hotel[] = [];
-  filteredHotels: Hotel[] = [];
+  hotels: HotelDisplay[] = [];
+  filteredHotels: HotelDisplay[] = [];
   searchTerm: string = '';
+  selectedLocation: string = ''; // Para compatibilidad con HTML
   selectedCity: string = '';
   selectedCountry: string = '';
   minRating: number = 0;
+  minPrice: number = 0; // Para compatibilidad con HTML
+  maxPrice: number = 1000; // Para compatibilidad con HTML
   sortBy: string = 'name';
   sortOrder: 'ASC' | 'DESC' = 'ASC';
+  
+  // Para compatibilidad con HTML
+  locations: string[] = ['New York', 'Los Angeles', 'Chicago', 'Miami', 'Las Vegas'];
   
   // Estados de la aplicación
   loading: boolean = false;
@@ -60,7 +73,13 @@ export class HotelsComponent implements OnInit {
     this.hotelsService.getHotels(filters).subscribe({
       next: (response: HotelsResponse) => {
         if (response.success) {
-          this.hotels = response.data.hotels;
+          // Mapear los datos del backend para compatibilidad con el template
+          this.hotels = response.data.hotels.map(hotel => ({
+            ...hotel,
+            imageUrl: hotel.photos && hotel.photos.length > 0 ? hotel.photos[0] : 'https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg',
+            price: 199, // Precio por defecto - debería venir de las habitaciones
+            location: `${hotel.address.city}, ${hotel.address.country}`
+          }));
           this.filteredHotels = [...this.hotels];
           
           if (response.data.pagination) {
@@ -106,7 +125,13 @@ export class HotelsComponent implements OnInit {
       this.hotelsService.searchHotels(this.searchTerm).subscribe({
         next: (response: HotelsResponse) => {
           if (response.success) {
-            this.hotels = response.data.hotels;
+            // Mapear los datos del backend para compatibilidad con el template
+            this.hotels = response.data.hotels.map(hotel => ({
+              ...hotel,
+              imageUrl: hotel.photos && hotel.photos.length > 0 ? hotel.photos[0] : 'https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg',
+              price: 199, // Precio por defecto - debería venir de las habitaciones
+              location: `${hotel.address.city}, ${hotel.address.country}`
+            }));
             this.filteredHotels = [...this.hotels];
             this.loadHotelStats();
           } else {
@@ -128,15 +153,24 @@ export class HotelsComponent implements OnInit {
   // Aplicar filtros
   applyFilters() {
     this.currentPage = 1; // Resetear a primera página
+    
+    // Sincronizar selectedLocation con selectedCity para el backend
+    if (this.selectedLocation) {
+      this.selectedCity = this.selectedLocation;
+    }
+    
     this.loadHotels();
   }
 
   // Limpiar filtros
   clearFilters() {
     this.searchTerm = '';
+    this.selectedLocation = '';
     this.selectedCity = '';
     this.selectedCountry = '';
     this.minRating = 0;
+    this.minPrice = 0;
+    this.maxPrice = 1000;
     this.sortBy = 'name';
     this.sortOrder = 'ASC';
     this.currentPage = 1;

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, HttpService } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -205,8 +205,8 @@ export class AuthService {
       { user_id: user.user_id },
       { 
         email_verified: true,
-        email_verification_token: null,
-        email_verification_expires: null,
+        email_verification_token: undefined,
+        email_verification_expires: undefined,
         updated_at: new Date()
       }
     );
