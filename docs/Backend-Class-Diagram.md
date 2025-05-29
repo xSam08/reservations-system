@@ -60,6 +60,7 @@ classDiagram
     class HotelsService {
         -hotelRepository: Repository~Hotel~
         -roomRepository: Repository~Room~
+        -availabilityServiceUrl: string
         +create(createHotelDto, ownerId: string): Promise~HotelResponseDto~
         +findAll(): Promise~HotelResponseDto[]~
         +search(query: string): Promise~HotelResponseDto[]~
@@ -70,7 +71,9 @@ classDiagram
         +getHotelRooms(hotelId: string): Promise~RoomResponseDto[]~
         +updateRoom(roomId: string, updateDto): Promise~RoomResponseDto~
         +deleteRoom(roomId: string): Promise~void~
-        +checkRoomAvailability(roomId: string, dates): Promise~boolean~
+        +getRoomAvailability(roomId: string, checkInDate: Date, checkOutDate: Date): Promise~AvailabilityStatus~
+        +getAvailableRooms(hotelId: string, checkInDate: Date, checkOutDate: Date): Promise~RoomResponseDto[]~
+        +searchAvailableRooms(searchParams): Promise~PaginatedResponse~RoomResponseDto~~
     }
 
     %% ======================================
@@ -89,6 +92,7 @@ classDiagram
 
     class ReservationService {
         -reservationRepository: Repository~Reservation~
+        -availabilityServiceUrl: string
         +create(createReservationDto, userId: string): Promise~ReservationResponseDto~
         +findAll(): Promise~ReservationResponseDto[]~
         +findOne(id: string): Promise~ReservationResponseDto~
@@ -96,6 +100,7 @@ classDiagram
         +cancel(id: string, reason: string, userId: string): Promise~ReservationResponseDto~
         +getUserReservations(userId: string): Promise~ReservationResponseDto[]~
         +confirmReservation(id: string): Promise~ReservationResponseDto~
+        -updateAvailabilityForReservation(roomId: string, checkInDate: Date, checkOutDate: Date, action: string): Promise~void~
     }
 
     %% ======================================
@@ -226,55 +231,67 @@ classDiagram
     %% ======================================
     class AvailabilityController {
         -availabilityService: AvailabilityService
+        +createAvailability(createDto): Promise~ApiResponse~
         +checkAvailability(checkDto): Promise~ApiResponse~
-        +updateAvailability(updateDto): Promise~ApiResponse~
-        +getAvailabilityCalendar(roomId: string): Promise~ApiResponse~
+        +getAvailabilityByRoom(roomId: string, startDate: string, endDate: string): Promise~ApiResponse~
+        +updateAvailability(id: string, updateDto): Promise~ApiResponse~
+        +reduceAvailability(roomId: string, date: string, quantity?: number): Promise~ApiResponse~
+        +restoreAvailability(roomId: string, date: string, quantity?: number): Promise~ApiResponse~
+        +deleteAvailability(id: string): Promise~ApiResponse~
     }
 
     class AvailabilityService {
         -availabilityRepository: Repository~Availability~
-        +checkAvailability(checkDto): Promise~boolean~
-        +updateAvailability(updateDto): Promise~AvailabilityResponseDto~
-        +getAvailabilityCalendar(roomId: string): Promise~CalendarResponseDto~
+        +createAvailability(createDto): Promise~AvailabilityResponseDto~
+        +getAvailabilityByRoomAndDateRange(roomId: string, startDate: string, endDate: string): Promise~AvailabilityResponseDto[]~
+        +checkAvailability(checkDto): Promise~{available: boolean, availabilityData: AvailabilityResponseDto[]}~
+        +updateAvailability(id: string, updateDto): Promise~AvailabilityResponseDto~
+        +reduceAvailability(roomId: string, date: string, quantity: number): Promise~AvailabilityResponseDto~
+        +restoreAvailability(roomId: string, date: string, quantity: number): Promise~AvailabilityResponseDto~
+        +deleteAvailability(id: string): Promise~void~
     }
 
     %% ======================================
     %% RELATIONSHIPS
     %% ======================================
     
-    %% API Gateway routes to all controllers
-    APIGateway --> AuthController
-    APIGateway --> HotelsController
-    APIGateway --> ReservationController
-    APIGateway --> PaymentController
-    APIGateway --> ReviewController
-    APIGateway --> UsersController
-    APIGateway --> NotificationController
-    APIGateway --> SearchController
-    APIGateway --> ReportController
-    APIGateway --> AvailabilityController
+    %% API Gateway routes to all controllers (HTTP routing)
+    APIGateway ..> AuthController : routes
+    APIGateway ..> HotelsController : routes
+    APIGateway ..> ReservationController : routes
+    APIGateway ..> PaymentController : routes
+    APIGateway ..> ReviewController : routes
+    APIGateway ..> UsersController : routes
+    APIGateway ..> NotificationController : routes
+    APIGateway ..> SearchController : routes
+    APIGateway ..> ReportController : routes
+    APIGateway ..> AvailabilityController : routes
 
-    %% Controller-Service relationships
-    AuthController --> AuthService
-    HotelsController --> HotelsService
-    ReservationController --> ReservationService
-    PaymentController --> PaymentService
-    ReviewController --> ReviewService
-    UsersController --> UsersService
-    NotificationController --> NotificationService
-    SearchController --> SearchService
-    ReportController --> ReportService
-    AvailabilityController --> AvailabilityService
+    %% Controller-Service relationships (direct injection/composition)
+    AuthController --> AuthService : uses
+    HotelsController --> HotelsService : uses
+    ReservationController --> ReservationService : uses
+    PaymentController --> PaymentService : uses
+    ReviewController --> ReviewService : uses
+    UsersController --> UsersService : uses
+    NotificationController --> NotificationService : uses
+    SearchController --> SearchService : uses
+    ReportController --> ReportService : uses
+    AvailabilityController --> AvailabilityService : uses
 
-    %% Inter-service communication
-    AuthService --> NotificationService : sends verification emails
-    ReservationService --> PaymentService : processes payments
-    ReservationService --> NotificationService : sends confirmations
-    PaymentService --> NotificationService : sends payment confirmations
-    SearchService --> HotelsService : searches hotels
-    ReportService --> ReservationService : gets reservation data
-    ReportService --> PaymentService : gets payment data
-    HotelsService --> AvailabilityService : checks room availability
+    %% Inter-microservice communication (HTTP requests)
+    AuthService ..> NotificationController : HTTP POST /email-verification
+    ReservationService ..> PaymentController : HTTP POST /payments/create
+    ReservationService ..> NotificationController : HTTP POST /reservation-confirmation
+    ReservationService ..> AvailabilityController : HTTP POST /availability/check
+    ReservationService ..> AvailabilityController : HTTP POST /availability/reduce/:roomId/:date
+    ReservationService ..> AvailabilityController : HTTP POST /availability/restore/:roomId/:date
+    PaymentService ..> NotificationController : HTTP POST /payment-confirmation
+    SearchService ..> HotelsController : HTTP GET /hotels/search
+    ReportService ..> ReservationController : HTTP GET /reservations
+    ReportService ..> PaymentController : HTTP GET /payments
+    HotelsService ..> AvailabilityController : HTTP POST /availability/check
+    HotelsService ..> AvailabilityController : HTTP GET /availability/room/:roomId
 ```
 
 ## Descripción del Diagrama
@@ -302,15 +319,29 @@ Este diagrama muestra la arquitectura simplificada de clases del backend del sis
 - **Repository Pattern**: Abstracción de acceso a datos
 - **API Gateway Pattern**: Punto único de entrada
 
-### **Comunicación Entre Servicios**
+### **Tipos de Relaciones UML**
 
-- **Auth → Notification**: Envío de emails de verificación
-- **Reservation → Payment**: Procesamiento de pagos
-- **Reservation → Notification**: Confirmaciones de reserva  
-- **Payment → Notification**: Confirmaciones de pago
-- **Search → Hotels**: Búsqueda de hoteles
-- **Hotels → Availability**: Verificación de disponibilidad
-- **Report → Múltiples servicios**: Recopilación de datos
+- **Línea sólida (→)**: Composición/Inyección directa (Controller usa Service)
+- **Línea punteada (..>)**: Dependencia/Comunicación HTTP entre microservicios
+
+### **Comunicación Entre Microservicios (HTTP)**
+
+#### **Integración con Availability Service (NUEVA)**
+- **ReservationService → AvailabilityController**: 
+  - `POST /availability/check` - Verificar disponibilidad antes de crear reserva
+  - `POST /availability/reduce/:roomId/:date` - Reducir disponibilidad al crear reserva
+  - `POST /availability/restore/:roomId/:date` - Restaurar disponibilidad al cancelar
+- **HotelsService → AvailabilityController**:
+  - `POST /availability/check` - Verificar disponibilidad para fechas específicas
+  - `GET /availability/room/:roomId` - Obtener disponibilidad por rango de fechas
+
+#### **Otras Comunicaciones**
+- **AuthService → NotificationController**: `POST /email-verification`
+- **ReservationService → PaymentController**: `POST /payments/create`
+- **ReservationService → NotificationController**: `POST /reservation-confirmation`
+- **PaymentService → NotificationController**: `POST /payment-confirmation`
+- **SearchService → HotelsController**: `GET /hotels/search`
+- **ReportService → Multiple Controllers**: `GET` para recopilación de datos
 
 ### **Características del Sistema**
 

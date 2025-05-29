@@ -12,11 +12,11 @@ export const config = {
     user: process.env.USER_SERVICE_URL || 'http://localhost:3002',
     hotel: process.env.HOTEL_SERVICE_URL || 'http://localhost:3003',
     reservation: process.env.RESERVATION_SERVICE_URL || 'http://localhost:3004',
-    review: process.env.REVIEW_SERVICE_URL || 'http://localhost:3005',
-    notification: process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3006',
-    report: process.env.REPORT_SERVICE_URL || 'http://localhost:3007',
+    availability: process.env.AVAILABILITY_SERVICE_URL || 'http://localhost:3005',
+    review: process.env.REVIEW_SERVICE_URL || 'http://localhost:3006',
+    notification: process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3007',
     payment: process.env.PAYMENT_SERVICE_URL || 'http://localhost:3008',
-    availability: process.env.AVAILABILITY_SERVICE_URL || 'http://localhost:3009',
+    report: process.env.REPORT_SERVICE_URL || 'http://localhost:3009',
     search: process.env.SEARCH_SERVICE_URL || 'http://localhost:3010'
   },
 

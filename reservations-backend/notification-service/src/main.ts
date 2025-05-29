@@ -47,9 +47,9 @@ async function bootstrap() {
   const port = process.env.PORT || 3006;
   await app.listen(port);
   
-  console.log(`📧 Notification Service running on port ${port}`);
-  console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
-  console.log(`✉️  Email service configured and ready`);
+  console.log(`Notification Service running on port ${port}`);
+  console.log(`API Documentation: http://localhost:${port}/api-docs`);
+  console.log(`Email service configured and ready`);
 }
 
 bootstrap();

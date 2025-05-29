@@ -4,9 +4,12 @@ import { Repository, Between } from 'typeorm';
 import { Reservation } from '../entities/reservation.entity';
 import { CreateReservationDto, UpdateReservationDto, ReservationFilterDto } from '../dto/reservation.dto';
 import { ReservationStatus } from '../enums/reservation.enum';
+import axios from 'axios';
 
 @Injectable()
 export class ReservationService {
+  private readonly availabilityServiceUrl = process.env.AVAILABILITY_SERVICE_URL || 'http://localhost:3005';
+
   constructor(
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
@@ -140,19 +143,35 @@ export class ReservationService {
       throw new BadRequestException('Check-out date must be after check-in date');
     }
 
-    // Check room availability
-    const conflictingReservations = await this.reservationRepository.createQueryBuilder('reservation')
-      .where('reservation.roomId = :roomId', { roomId })
-      .andWhere('reservation.status NOT IN (:...statuses)', { 
-        statuses: [ReservationStatus.CANCELLED, ReservationStatus.REJECTED] 
-      })
-      .andWhere(`
-        (reservation.checkInDate <= :checkOutDate AND reservation.checkOutDate >= :checkInDate)
-      `, { checkInDate, checkOutDate })
-      .getMany();
+    // Check room availability using availability service
+    try {
+      const availabilityResponse = await axios.post(`${this.availabilityServiceUrl}/availability/check`, {
+        roomId,
+        checkInDate: checkIn.toISOString().split('T')[0],
+        checkOutDate: checkOut.toISOString().split('T')[0]
+      });
 
-    if (conflictingReservations.length > 0) {
-      throw new ConflictException('Room is not available for the selected dates');
+      if (!availabilityResponse.data.success || !availabilityResponse.data.data.available) {
+        throw new ConflictException('Room is not available for the selected dates');
+      }
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      // Fallback to database check if availability service is down
+      const conflictingReservations = await this.reservationRepository.createQueryBuilder('reservation')
+        .where('reservation.roomId = :roomId', { roomId })
+        .andWhere('reservation.status NOT IN (:...statuses)', { 
+          statuses: [ReservationStatus.CANCELLED, ReservationStatus.REJECTED] 
+        })
+        .andWhere(`
+          (reservation.checkInDate <= :checkOutDate AND reservation.checkOutDate >= :checkInDate)
+        `, { checkInDate, checkOutDate })
+        .getMany();
+
+      if (conflictingReservations.length > 0) {
+        throw new ConflictException('Room is not available for the selected dates');
+      }
     }
 
     // Calculate price (simplified - should integrate with room pricing)
@@ -174,6 +193,15 @@ export class ReservationService {
     });
 
     const savedReservation = await this.reservationRepository.save(reservation);
+    
+    // Reduce availability for each day in the date range
+    try {
+      await this.updateAvailabilityForReservation(roomId, checkIn, checkOut, 'reduce');
+    } catch (error) {
+      console.error('Failed to update availability after reservation creation:', error);
+      // Don't fail the reservation if availability service is down, but log it
+    }
+    
     return this.mapToResponseDto(savedReservation);
   }
 
@@ -301,6 +329,19 @@ export class ReservationService {
     reservation.cancellationReason = reason;
 
     const updatedReservation = await this.reservationRepository.save(reservation);
+    
+    // Restore availability when reservation is cancelled
+    try {
+      await this.updateAvailabilityForReservation(
+        reservation.roomId, 
+        reservation.checkInDate, 
+        reservation.checkOutDate, 
+        'restore'
+      );
+    } catch (error) {
+      console.error('Failed to update availability after reservation cancellation:', error);
+    }
+    
     return this.mapToResponseDto(updatedReservation);
   }
 
@@ -314,6 +355,32 @@ export class ReservationService {
     }
 
     await this.reservationRepository.remove(reservation);
+  }
+
+  private async updateAvailabilityForReservation(
+    roomId: string, 
+    checkInDate: Date, 
+    checkOutDate: Date, 
+    action: 'reduce' | 'restore'
+  ): Promise<void> {
+    const startDate = new Date(checkInDate);
+    const endDate = new Date(checkOutDate);
+    
+    // Loop through each day in the date range
+    for (let currentDate = new Date(startDate); currentDate < endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+      const dateString = currentDate.toISOString().split('T')[0];
+      
+      try {
+        if (action === 'reduce') {
+          await axios.post(`${this.availabilityServiceUrl}/availability/reduce/${roomId}/${dateString}?quantity=1`);
+        } else if (action === 'restore') {
+          await axios.post(`${this.availabilityServiceUrl}/availability/restore/${roomId}/${dateString}?quantity=1`);
+        }
+      } catch (error) {
+        console.error(`Failed to ${action} availability for room ${roomId} on ${dateString}:`, error.message);
+        // Continue with other dates even if one fails
+      }
+    }
   }
 
   private mapToResponseDto(reservation: Reservation) {

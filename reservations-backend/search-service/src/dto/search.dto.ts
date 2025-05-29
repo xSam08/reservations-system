@@ -1,23 +1,29 @@
 import { IsOptional, IsString, IsDateString, IsNumber, IsEnum, IsArray, Min, Max } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class HotelSearchDto {
+  @ApiPropertyOptional({ description: 'Location to search', example: 'New York City' })
   @IsOptional()
   @IsString()
   location?: string;
 
+  @ApiPropertyOptional({ description: 'City name', example: 'New York' })
   @IsOptional()
   @IsString()
   city?: string;
 
+  @ApiPropertyOptional({ description: 'Country name', example: 'United States' })
   @IsOptional()
   @IsString()
   country?: string;
 
+  @ApiPropertyOptional({ description: 'Check-in date', example: '2024-06-15' })
   @IsOptional()
   @IsDateString()
   checkInDate?: string;
 
+  @ApiPropertyOptional({ description: 'Check-out date', example: '2024-06-18' })
   @IsOptional()
   @IsDateString()
   checkOutDate?: string;
@@ -84,6 +90,7 @@ export class HotelSearchDto {
 }
 
 export class RoomSearchDto {
+  @ApiProperty({ description: 'Hotel ID', example: '507f1f77bcf86cd799439013' })
   @IsString()
   hotelId: string;
 
@@ -143,6 +150,7 @@ export class RoomSearchDto {
 }
 
 export class SearchSuggestionsDto {
+  @ApiProperty({ description: 'Search query', example: 'New York' })
   @IsString()
   query: string;
 

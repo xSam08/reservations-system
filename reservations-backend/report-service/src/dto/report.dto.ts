@@ -1,4 +1,5 @@
 import { IsString, IsOptional, IsDateString, IsEnum, IsUUID, IsArray } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum ReportType {
   RESERVATIONS = 'RESERVATIONS',
@@ -24,30 +25,38 @@ export enum TimePeriod {
 }
 
 export class GenerateReportDto {
+  @ApiProperty({ description: 'Report type', enum: ReportType, example: ReportType.RESERVATIONS })
   @IsEnum(ReportType)
   type: ReportType;
 
+  @ApiProperty({ description: 'Time period for report', enum: TimePeriod, example: TimePeriod.MONTHLY })
   @IsEnum(TimePeriod)
   period: TimePeriod;
 
+  @ApiProperty({ description: 'Report start date', example: '2024-01-01' })
   @IsDateString()
   startDate: string;
 
+  @ApiProperty({ description: 'Report end date', example: '2024-12-31' })
   @IsDateString()
   endDate: string;
 
+  @ApiPropertyOptional({ description: 'Hotel ID filter', example: '507f1f77bcf86cd799439013' })
   @IsOptional()
   @IsUUID()
   hotelId?: string;
 
+  @ApiPropertyOptional({ description: 'User ID filter', example: '507f1f77bcf86cd799439012' })
   @IsOptional()
   @IsString()
   userId?: string;
 
+  @ApiPropertyOptional({ description: 'Report format', enum: ReportFormat, default: ReportFormat.JSON })
   @IsOptional()
   @IsEnum(ReportFormat)
   format?: ReportFormat = ReportFormat.JSON;
 
+  @ApiPropertyOptional({ description: 'Additional filters', example: ['confirmed', 'paid'] })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })

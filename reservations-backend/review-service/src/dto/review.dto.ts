@@ -1,23 +1,30 @@
 import { IsString, IsNumber, IsOptional, IsUUID, Min, Max, IsArray } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateReviewDto {
+  @ApiProperty({ description: 'Reservation ID', example: '507f1f77bcf86cd799439011' })
   @IsUUID()
   reservationId: string;
 
+  @ApiProperty({ description: 'User ID', example: '507f1f77bcf86cd799439012' })
   @IsString()
   userId: string;
 
+  @ApiProperty({ description: 'Hotel ID', example: '507f1f77bcf86cd799439013' })
   @IsUUID()
   hotelId: string;
 
+  @ApiProperty({ description: 'Overall rating', example: 4, minimum: 1, maximum: 5 })
   @IsNumber()
   @Min(1)
   @Max(5)
   rating: number;
 
+  @ApiProperty({ description: 'Review title', example: 'Great stay!' })
   @IsString()
   title: string;
 
+  @ApiProperty({ description: 'Review comment', example: 'Had a wonderful time at this hotel.' })
   @IsString()
   comment: string;
 

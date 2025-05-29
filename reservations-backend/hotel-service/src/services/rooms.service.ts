@@ -11,9 +11,12 @@ import { CreateRoomDto, UpdateRoomDto, RoomResponseDto } from '../dto';
 import { UserRole, RoomType } from '../common/enums';
 import { PaginationParams, PaginatedResponse } from '../common/types';
 import { PaginationUtil } from '../common/pagination.util';
+import axios from 'axios';
 
 @Injectable()
 export class RoomsService {
+  private readonly availabilityServiceUrl = process.env.AVAILABILITY_SERVICE_URL || 'http://localhost:3005';
+
   constructor(
     @InjectRepository(Room)
     private roomRepository: Repository<Room>,
@@ -196,18 +199,34 @@ export class RoomsService {
       };
     }
 
-    // Here you would normally check against a reservations table to see if the room
-    // is booked for the requested dates. For now, we'll assume it's available
-    // if the room's basic availability flag is true.
-    
-    // TODO: Implement actual reservation checking when reservation service is integrated
-    return {
-      roomId,
-      isAvailable: true,
-      status: 'AVAILABLE',
-      checkInDate: checkInDate.toISOString(),
-      checkOutDate: checkOutDate.toISOString()
-    };
+    // Check availability using availability service
+    try {
+      const availabilityResponse = await axios.post(`${this.availabilityServiceUrl}/availability/check`, {
+        roomId,
+        checkInDate: checkInDate.toISOString().split('T')[0],
+        checkOutDate: checkOutDate.toISOString().split('T')[0]
+      });
+
+      const isAvailable = availabilityResponse.data.success && availabilityResponse.data.data.available;
+      
+      return {
+        roomId,
+        isAvailable,
+        status: isAvailable ? 'AVAILABLE' : 'UNAVAILABLE',
+        checkInDate: checkInDate.toISOString(),
+        checkOutDate: checkOutDate.toISOString()
+      };
+    } catch (error: any) {
+      console.error('Error checking availability from availability service:', error.message);
+      // Fallback: assume available if service is down and room is marked as available
+      return {
+        roomId,
+        isAvailable: room.isAvailable,
+        status: room.isAvailable ? 'AVAILABLE' : 'UNAVAILABLE',
+        checkInDate: checkInDate.toISOString(),
+        checkOutDate: checkOutDate.toISOString()
+      };
+    }
   }
 
   async findOne(id: string): Promise<RoomResponseDto> {
@@ -324,12 +343,29 @@ export class RoomsService {
       .where('room.hotel_id = :hotelId', { hotelId })
       .andWhere('room.is_available = :available', { available: true });
 
-    // Here you would add logic to check against existing reservations
-    // This would require access to the reservation service or database
-    // For now, we'll just return available rooms
-
     const rooms = await queryBuilder.getMany();
-    return rooms.map(room => this.mapToRoomResponse(room));
+    const availableRooms = [];
+
+    // Check each room's availability using availability service
+    for (const room of rooms) {
+      try {
+        const availabilityResponse = await axios.post(`${this.availabilityServiceUrl}/availability/check`, {
+          roomId: room.room_id,
+          checkInDate: checkInDate.toISOString().split('T')[0],
+          checkOutDate: checkOutDate.toISOString().split('T')[0]
+        });
+
+        if (availabilityResponse.data.success && availabilityResponse.data.data.available) {
+          availableRooms.push(this.mapToRoomResponse(room));
+        }
+      } catch (error: any) {
+        console.error(`Error checking availability for room ${room.room_id}:`, error.message);
+        // If availability service is down, include room if it's marked as available
+        availableRooms.push(this.mapToRoomResponse(room));
+      }
+    }
+
+    return availableRooms;
   }
 
   async searchAvailableRooms(params: {
