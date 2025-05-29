@@ -246,7 +246,7 @@ export class AuthService {
 
   private async sendVerificationEmail(email: string, token: string): Promise<void> {
     try {
-      const notificationServiceUrl = this.configService.get('NOTIFICATION_SERVICE_URL') || 'http://localhost:3006';
+      const notificationServiceUrl = this.configService.get('NOTIFICATION_SERVICE_URL') || 'http://notification-service:3006';
       const authServiceUrl = this.configService.get('AUTH_SERVICE_URL') || 'http://localhost:3001';
       const verificationUrl = `${authServiceUrl}/auth/verify-email?token=${token}`;
 
